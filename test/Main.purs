@@ -20,9 +20,9 @@ import Prelude
 data Message
   = MakeLoginAttempt
       ( ( SignUp.State
-        → Aff (Array SignUp.Error)
+        -> Aff (Array SignUp.Error)
         )
-      → Aff Unit
+      -> Aff Unit
       )
 
 -- | We export from the SignUp module as a delegate, so when we embed the html
@@ -31,12 +31,12 @@ data Message
 -- | communication between a delegate and its parent.
 
 view
-  ∷ ∀ input
+  :: forall input
   . PH.HTML input Message Unit
 
 view
   = SignUp.application
-      { input: \_ → Nothing
+      { input: \_ -> Nothing
       , output: case _ of
           SignUp.LoginAttempted handle ->
             Just (MakeLoginAttempt handle)
@@ -47,13 +47,13 @@ view
 -- | SignUp form, which we can fake for the demo.
 
 update
-  ∷ ∀ input output
+  :: forall input output
   . P.Updater input output Message Unit
 
 update _ dispatch { message: MakeLoginAttempt handle }
   = void
   $ runAff mempty
-  $ handle \state → do
+  $ handle \state -> do
       delay (Milliseconds 2000.0)
 
       pure
@@ -63,7 +63,7 @@ update _ dispatch { message: MakeLoginAttempt handle }
 -- | At the top-level, we build an application just like any other, but then
 -- | `runApplication` within some container (in this case, the body).
 
-main ∷ Effect Unit
+main :: Effect Unit
 main
   = void
   $ P.runApplicationInBody

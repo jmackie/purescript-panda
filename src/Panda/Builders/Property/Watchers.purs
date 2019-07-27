@@ -7,11 +7,11 @@ import Panda.Internal.Types as Types
 -- | you use independent `watch` values for each property that is dynamic.
 
 watch
-  ∷ ∀ input message state
-  . ( { input ∷ input, state ∷ state }
-    → Types.ShouldUpdate (Types.Property input message state)
+  :: forall input message state
+  . ( { input :: input, state :: state }
+    -> Types.ShouldUpdate (Types.Property input message state)
     )
-  → Types.Property input message state
+  -> Types.Property input message state
 
 watch listener
   = Types.Dynamic listener
@@ -20,13 +20,13 @@ watch listener
 -- | value whenever the predicate yields true.
 
 when
-  ∷ ∀ input message state
-  . ({ input ∷ input, state ∷ state } → Boolean)
-  → ({ input ∷ input, state ∷ state } → Types.Property input message state)
-  → Types.Property input message state
+  :: forall input message state
+  . ({ input :: input, state :: state } -> Boolean)
+  -> ({ input :: input, state :: state } -> Types.Property input message state)
+  -> Types.Property input message state
 
 when predicate build
-  = Types.Dynamic \update →
+  = Types.Dynamic \update ->
       if predicate update
         then Types.SetTo (build update)
         else Types.Ignore

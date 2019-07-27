@@ -20,14 +20,14 @@ import Prelude
 -- | outgoing `events`, and even `destroy` the component entirely.
 
 bootstrap
-  ∷ ∀ input output message state
+  :: forall input output message state
   . Web.Document
-  → Types.Component input output message state
-  → Effect
-      { node    ∷ Web.Node
-      , update  ∷ input → Effect Unit
-      , events  ∷ FRP.Event output
-      , destroy ∷ Effect Unit
+  -> Types.Component input output message state
+  -> Effect
+      { node    :: Web.Node
+      , update  :: input -> Effect Unit
+      , events  :: FRP.Event output
+      , destroy :: Effect Unit
       }
 
 bootstrap document { view, subscription, initial, update } = do
@@ -37,30 +37,30 @@ bootstrap document { view, subscription, initial, update } = do
   external ← FRP.create
 
   let
-    events ∷ FRP.Event message
+    events :: FRP.Event message
     events = subscription <|> system.events
 
-  cancel ← FRP.subscribe events \message → do
+  cancel ← FRP.subscribe events \message -> do
     state ← Ref.read stateRef
 
     -- When a "message" is raised by the body, we call the supplied update
     -- function with an "emitter" (to trigger external events), a "dispatcher"
     -- (to update internal state and view), and the message in question, along
     -- with the state at that moment.
-    { message, state } # update external.push \callback → do
+    { message, state } # update external.push \callback -> do
       mostRecentState ← Ref.read stateRef
 
       let new@{ state } = callback mostRecentState
       Ref.write new.state stateRef
 
-      new.input # maybe (pure unit) \input →
+      new.input # maybe (pure unit) \input ->
         system.handleUpdate { input, state }
 
   system.handleUpdate initial
 
   pure
     { node
-    , update: \input → do
+    , update: \input -> do
         state ← Ref.read stateRef -- Is this a hack?
         system.handleUpdate { input, state }
 

@@ -19,39 +19,39 @@ import Web.HTML.Event.DragEvent.EventTypes  (drag, dragend, dragenter, dragleave
 
 import Prelude
 
-producerToEventType ∷ Types.Producer → Web.EventType
+producerToEventType :: Types.Producer -> Web.EventType
 producerToEventType = case _ of
-  Types.OnBlur          → Web.Events.blur
-  Types.OnChange        → Web.Events.change
-  Types.OnClick         → Web.Events.click
-  Types.OnDoubleClick   → Web.Events.dblclick
-  Types.OnDrag          → Web.Events.drag
-  Types.OnDragEnd       → Web.Events.dragend
-  Types.OnDragEnter     → Web.Events.dragenter
-  Types.OnDragLeave     → Web.Events.dragleave
-  Types.OnDragOver      → Web.Events.dragover
-  Types.OnDragStart     → Web.Events.dragstart
-  Types.OnDrop          → Web.Events.drop
-  Types.OnError         → Web.Events.error
-  Types.OnFocus         → Web.Events.focus
-  Types.OnInput         → Web.Events.input
-  Types.OnKeyDown       → Web.Events.keydown
-  Types.OnKeyUp         → Web.Events.keyup
-  Types.OnMouseDown     → Web.Events.mousedown
-  Types.OnMouseEnter    → Web.Events.mouseenter
-  Types.OnMouseLeave    → Web.Events.mouseleave
-  Types.OnMouseMove     → Web.Events.mousemove
-  Types.OnMouseOut      → Web.Events.mouseout
-  Types.OnMouseOver     → Web.Events.mouseover
-  Types.OnMouseUp       → Web.Events.mouseup
-  Types.OnSubmit        → Web.Events.submit
+  Types.OnBlur          -> Web.Events.blur
+  Types.OnChange        -> Web.Events.change
+  Types.OnClick         -> Web.Events.click
+  Types.OnDoubleClick   -> Web.Events.dblclick
+  Types.OnDrag          -> Web.Events.drag
+  Types.OnDragEnd       -> Web.Events.dragend
+  Types.OnDragEnter     -> Web.Events.dragenter
+  Types.OnDragLeave     -> Web.Events.dragleave
+  Types.OnDragOver      -> Web.Events.dragover
+  Types.OnDragStart     -> Web.Events.dragstart
+  Types.OnDrop          -> Web.Events.drop
+  Types.OnError         -> Web.Events.error
+  Types.OnFocus         -> Web.Events.focus
+  Types.OnInput         -> Web.Events.input
+  Types.OnKeyDown       -> Web.Events.keydown
+  Types.OnKeyUp         -> Web.Events.keyup
+  Types.OnMouseDown     -> Web.Events.mousedown
+  Types.OnMouseEnter    -> Web.Events.mouseenter
+  Types.OnMouseLeave    -> Web.Events.mouseleave
+  Types.OnMouseMove     -> Web.Events.mousemove
+  Types.OnMouseOut      -> Web.Events.mouseout
+  Types.OnMouseOver     -> Web.Events.mouseover
+  Types.OnMouseUp       -> Web.Events.mouseup
+  Types.OnSubmit        -> Web.Events.submit
 
 renderStaticFixed
-  ∷ ∀ input message state
+  :: forall input message state
   . Web.Element
-  → String
-  → String
-  → Effect (Types.EventSystem input message state)
+  -> String
+  -> String
+  -> Effect (Types.EventSystem input message state)
 
 renderStaticFixed element key value = do
   Web.setAttribute key value element
@@ -59,15 +59,15 @@ renderStaticFixed element key value = do
   pure
     { cancel: Web.removeAttribute key element
     , events: empty
-    , handleUpdate: \_ → pure unit
+    , handleUpdate: \_ -> pure unit
     }
 
 renderStaticProducer
-  ∷ ∀ input message state
+  :: forall input message state
   . Web.Element
-  → Types.Producer
-  → (Web.Event → Maybe message)
-  → Effect (Types.EventSystem input message state)
+  -> Types.Producer
+  -> (Web.Event -> Maybe message)
+  -> Effect (Types.EventSystem input message state)
 
 renderStaticProducer element key onEvent = do
   { push, event: events } ← FRP.create
@@ -82,16 +82,16 @@ renderStaticProducer element key onEvent = do
   pure
     { cancel: Web.removeEventListener eType eListener false eTarget
     , events
-    , handleUpdate: \_ → pure unit
+    , handleUpdate: \_ -> pure unit
     }
 
 renderDynamic
-  ∷ ∀ input message state
+  :: forall input message state
   . Web.Element
-  → ( { input ∷ input, state ∷ state }
-    → Types.ShouldUpdate (Types.Property input message state)
+  -> ( { input :: input, state :: state }
+    -> Types.ShouldUpdate (Types.Property input message state)
     )
-  → Effect (Types.EventSystem input message state)
+  -> Effect (Types.EventSystem input message state)
 
 renderDynamic element watcher = do
   subproducer ← FRP.create
@@ -99,24 +99,24 @@ renderDynamic element watcher = do
 
   pure
     { cancel: Ref.read propertyRef >>= case _ of
-        Just { cancel } → cancel
-        Nothing         → pure unit
+        Just { cancel } -> cancel
+        Nothing         -> pure unit
 
     , events: subproducer.event
-    , handleUpdate: \input → do
+    , handleUpdate: \input -> do
         let
           clearListener = Ref.read propertyRef >>= case _ of
-            Just { cancel } → do
+            Just { cancel } -> do
               Ref.write Nothing propertyRef
               cancel
 
-            Nothing → pure unit
+            Nothing -> pure unit
 
         case watcher input of
-          Types.Ignore → pure unit
-          Types.Clear  → clearListener
+          Types.Ignore -> pure unit
+          Types.Clear  -> clearListener
 
-          Types.SetTo nextProperty → do
+          Types.SetTo nextProperty -> do
             clearListener
 
             property  ← render element nextProperty
@@ -133,17 +133,17 @@ renderDynamic element watcher = do
     }
 
 render
-  ∷ ∀ input message state
+  :: forall input message state
   . Web.Element
-  → Types.Property input message state
-  → Effect (Types.EventSystem input message state)
+  -> Types.Property input message state
+  -> Effect (Types.EventSystem input message state)
 
 render element = case _ of
-  Types.Fixed { key, value } →
+  Types.Fixed { key, value } ->
     renderStaticFixed element key value
 
-  Types.Producer { key, onEvent } →
+  Types.Producer { key, onEvent } ->
     renderStaticProducer element key onEvent
 
-  Types.Dynamic watcher →
+  Types.Dynamic watcher ->
     renderDynamic element watcher

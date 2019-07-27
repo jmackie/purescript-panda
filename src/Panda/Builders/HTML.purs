@@ -440,53 +440,53 @@ import Panda.Builders.HTML.Collection as Collection
 -- | A fully-polymorphic component (and therefore either an element or text).
 
 type Element
-  = ∀ input message state
+  = forall input message state
   . Array (Types.Property input message state)
-  → Array (Types.HTML input message state)
-  → Types.HTML input message state
+  -> Array (Types.HTML input message state)
+  -> Types.HTML input message state
 
 -- | A fully-polymorphic component with no properties.
 
 type ElementNoProperties
-  = ∀ input message state
+  = forall input message state
   . Array (Types.HTML input message state)
-  → Types.HTML input message state
+  -> Types.HTML input message state
 
 -- | A fully-polymorphic component with no children.
 
 type SelfClosingElement
-  = ∀ input message state
+  = forall input message state
   . Array (Types.Property input message state)
-  → Types.HTML input message state
+  -> Types.HTML input message state
 
 -- | A fully-polymorphic component with no children or properties.
 
 type SelfClosingElementNoProperties
-  = ∀ input message state
+  = forall input message state
   . Types.HTML input message state
 
 -- | A fully-polymorphic container component.
 
 type Collection
-  = ∀ input message state
+  = forall input message state
   . Array (Types.Property input message state)
-  → ( { input ∷ input, state ∷ state }
-    → Array (Types.HTMLUpdate input message state)
+  -> ( { input :: input, state :: state }
+    -> Array (Types.HTMLUpdate input message state)
     )
-  → Types.HTML input message state
+  -> Types.HTML input message state
 
 -- | A fully-polymorphic container component with no properties.
 
 type CollectionNoProperties
-  = ∀ input message state
-  . ( { input ∷ input, state ∷ state }
-    → Array (Types.HTMLUpdate input message state)
+  = forall input message state
+  . ( { input :: input, state :: state }
+    -> Array (Types.HTMLUpdate input message state)
     )
-  → Types.HTML input message state
+  -> Types.HTML input message state
 
 -- | Make an element from its component parts.
 
-make ∷ String → Element
+make :: String -> Element
 make tagName properties children
   = Types.Element
       { tagName
@@ -497,7 +497,7 @@ make tagName properties children
 -- | Make a "collection" element from some container. These are collections in
 -- | the Panda sense - element containers that are open to incremental updates.
 
-collection ∷ String → Collection
+collection :: String -> Collection
 collection tagName properties watcher
   = Types.Collection
       { tagName
@@ -507,1299 +507,1299 @@ collection tagName properties watcher
 
 ---
 
-a ∷ Element
+a :: Element
 a = make "a"
 
-a' ∷ Collection
+a' :: Collection
 a' = collection "a"
 
-a'_ ∷ CollectionNoProperties
+a'_ :: CollectionNoProperties
 a'_ = a' []
 
-a_ ∷ ElementNoProperties
+a_ :: ElementNoProperties
 a_ = a []
 
-abbr ∷ Element
+abbr :: Element
 abbr = make "abbr"
 
-abbr' ∷ Collection
+abbr' :: Collection
 abbr' = collection "abbr"
 
-abbr'_ ∷ CollectionNoProperties
+abbr'_ :: CollectionNoProperties
 abbr'_ = abbr' []
 
-abbr_ ∷ ElementNoProperties
+abbr_ :: ElementNoProperties
 abbr_ = abbr []
 
-acronym ∷ Element
+acronym :: Element
 acronym = make "acronym"
 
-acronym' ∷ Collection
+acronym' :: Collection
 acronym' = collection "acronym"
 
-acronym'_ ∷ CollectionNoProperties
+acronym'_ :: CollectionNoProperties
 acronym'_ = acronym' []
 
-acronym_ ∷ ElementNoProperties
+acronym_ :: ElementNoProperties
 acronym_ = acronym []
 
-address ∷ Element
+address :: Element
 address = make "address"
 
-address' ∷ Collection
+address' :: Collection
 address' = collection "address"
 
-address'_ ∷ CollectionNoProperties
+address'_ :: CollectionNoProperties
 address'_ = address' []
 
-address_ ∷ ElementNoProperties
+address_ :: ElementNoProperties
 address_ = address []
 
-applet ∷ Element
+applet :: Element
 applet = make "applet"
 
-applet' ∷ Collection
+applet' :: Collection
 applet' = collection "applet"
 
-applet'_ ∷ CollectionNoProperties
+applet'_ :: CollectionNoProperties
 applet'_ = applet' []
 
-applet_ ∷ ElementNoProperties
+applet_ :: ElementNoProperties
 applet_ = applet []
 
-area ∷ SelfClosingElement
+area :: SelfClosingElement
 area props = make "area" props []
 
-area_ ∷ SelfClosingElementNoProperties
+area_ :: SelfClosingElementNoProperties
 area_ = area []
 
-article ∷ Element
+article :: Element
 article = make "article"
 
-article' ∷ Collection
+article' :: Collection
 article' = collection "article"
 
-article'_ ∷ CollectionNoProperties
+article'_ :: CollectionNoProperties
 article'_ = article' []
 
-article_ ∷ ElementNoProperties
+article_ :: ElementNoProperties
 article_ = article []
 
-aside ∷ Element
+aside :: Element
 aside = make "aside"
 
-aside' ∷ Collection
+aside' :: Collection
 aside' = collection "aside"
 
-aside'_ ∷ CollectionNoProperties
+aside'_ :: CollectionNoProperties
 aside'_ = aside' []
 
-aside_ ∷ ElementNoProperties
+aside_ :: ElementNoProperties
 aside_ = aside []
 
-audio ∷ Element
+audio :: Element
 audio = make "audio"
 
-audio' ∷ Collection
+audio' :: Collection
 audio' = collection "audio"
 
-audio'_ ∷ CollectionNoProperties
+audio'_ :: CollectionNoProperties
 audio'_ = audio' []
 
-audio_ ∷ ElementNoProperties
+audio_ :: ElementNoProperties
 audio_ = audio []
 
-b ∷ Element
+b :: Element
 b = make "b"
 
-b' ∷ Collection
+b' :: Collection
 b' = collection "b"
 
-b'_ ∷ CollectionNoProperties
+b'_ :: CollectionNoProperties
 b'_ = b' []
 
-b_ ∷ ElementNoProperties
+b_ :: ElementNoProperties
 b_ = b []
 
-base ∷ SelfClosingElement
+base :: SelfClosingElement
 base props = make "base" props []
 
-base_ ∷ SelfClosingElementNoProperties
+base_ :: SelfClosingElementNoProperties
 base_ = base []
 
-basefont ∷ Element
+basefont :: Element
 basefont = make "basefont"
 
-basefont' ∷ Collection
+basefont' :: Collection
 basefont' = collection "basefont"
 
-basefont'_ ∷ CollectionNoProperties
+basefont'_ :: CollectionNoProperties
 basefont'_ = basefont' []
 
-basefont_ ∷ ElementNoProperties
+basefont_ :: ElementNoProperties
 basefont_ = basefont []
 
-bdi ∷ Element
+bdi :: Element
 bdi = make "bdi"
 
-bdi' ∷ Collection
+bdi' :: Collection
 bdi' = collection "bdi"
 
-bdi'_ ∷ CollectionNoProperties
+bdi'_ :: CollectionNoProperties
 bdi'_ = bdi' []
 
-bdi_ ∷ ElementNoProperties
+bdi_ :: ElementNoProperties
 bdi_ = bdi []
 
-bdo ∷ Element
+bdo :: Element
 bdo = make "bdo"
 
-bdo' ∷ Collection
+bdo' :: Collection
 bdo' = collection "bdo"
 
-bdo'_ ∷ CollectionNoProperties
+bdo'_ :: CollectionNoProperties
 bdo'_ = bdo' []
 
-bdo_ ∷ ElementNoProperties
+bdo_ :: ElementNoProperties
 bdo_ = bdo []
 
-big ∷ Element
+big :: Element
 big = make "big"
 
-big' ∷ Collection
+big' :: Collection
 big' = collection "big"
 
-big'_ ∷ CollectionNoProperties
+big'_ :: CollectionNoProperties
 big'_ = big' []
 
-big_ ∷ ElementNoProperties
+big_ :: ElementNoProperties
 big_ = big []
 
-blockquote ∷ Element
+blockquote :: Element
 blockquote = make "blockquote"
 
-blockquote' ∷ Collection
+blockquote' :: Collection
 blockquote' = collection "blockquote"
 
-blockquote'_ ∷ CollectionNoProperties
+blockquote'_ :: CollectionNoProperties
 blockquote'_ = blockquote' []
 
-blockquote_ ∷ ElementNoProperties
+blockquote_ :: ElementNoProperties
 blockquote_ = make "blockquote" []
 
-br ∷ SelfClosingElement
+br :: SelfClosingElement
 br props = make "br" props []
 
-br_ ∷ SelfClosingElementNoProperties
+br_ :: SelfClosingElementNoProperties
 br_ = br []
 
-button ∷ Element
+button :: Element
 button = make "button"
 
-button' ∷ Collection
+button' :: Collection
 button' = collection "button"
 
-button'_ ∷ CollectionNoProperties
+button'_ :: CollectionNoProperties
 button'_ = button' []
 
-button_ ∷ ElementNoProperties
+button_ :: ElementNoProperties
 button_ = button []
 
-canvas ∷ Element
+canvas :: Element
 canvas = make "canvas"
 
-canvas' ∷ Collection
+canvas' :: Collection
 canvas' = collection "canvas"
 
-canvas'_ ∷ CollectionNoProperties
+canvas'_ :: CollectionNoProperties
 canvas'_ = canvas' []
 
-canvas_ ∷ ElementNoProperties
+canvas_ :: ElementNoProperties
 canvas_ = canvas []
 
-caption ∷ Element
+caption :: Element
 caption = make "caption"
 
-caption' ∷ Collection
+caption' :: Collection
 caption' = collection "caption"
 
-caption'_ ∷ CollectionNoProperties
+caption'_ :: CollectionNoProperties
 caption'_ = caption' []
 
-caption_ ∷ ElementNoProperties
+caption_ :: ElementNoProperties
 caption_ = caption []
 
-center ∷ Element
+center :: Element
 center = make "center"
 
-center' ∷ Collection
+center' :: Collection
 center' = collection "center"
 
-center'_ ∷ CollectionNoProperties
+center'_ :: CollectionNoProperties
 center'_ = center' []
 
-center_ ∷ ElementNoProperties
+center_ :: ElementNoProperties
 center_ = center []
 
-cite ∷ Element
+cite :: Element
 cite = make "cite"
 
-cite' ∷ Collection
+cite' :: Collection
 cite' = collection "cite"
 
-cite'_ ∷ CollectionNoProperties
+cite'_ :: CollectionNoProperties
 cite'_ = cite' []
 
-cite_ ∷ ElementNoProperties
+cite_ :: ElementNoProperties
 cite_ = cite []
 
-code ∷ Element
+code :: Element
 code = make "code"
 
-code' ∷ Collection
+code' :: Collection
 code' = collection "code"
 
-code'_ ∷ CollectionNoProperties
+code'_ :: CollectionNoProperties
 code'_ = code' []
 
-code_ ∷ ElementNoProperties
+code_ :: ElementNoProperties
 code_ = code []
 
-col ∷ SelfClosingElement
+col :: SelfClosingElement
 col props = make "col" props []
 
-col_ ∷ SelfClosingElementNoProperties
+col_ :: SelfClosingElementNoProperties
 col_ = col []
 
-colgroup ∷ Element
+colgroup :: Element
 colgroup = make "colgroup"
 
-colgroup' ∷ Collection
+colgroup' :: Collection
 colgroup' = collection "colgroup"
 
-colgroup'_ ∷ CollectionNoProperties
+colgroup'_ :: CollectionNoProperties
 colgroup'_ = colgroup' []
 
-colgroup_ ∷ ElementNoProperties
+colgroup_ :: ElementNoProperties
 colgroup_ = colgroup []
 
-command ∷ SelfClosingElement
+command :: SelfClosingElement
 command props = make "command" props []
 
-command_ ∷ SelfClosingElementNoProperties
+command_ :: SelfClosingElementNoProperties
 command_ = command []
 
-datalist ∷ Element
+datalist :: Element
 datalist = make "datalist"
 
-datalist' ∷ Collection
+datalist' :: Collection
 datalist' = collection "datalist"
 
-datalist'_ ∷ CollectionNoProperties
+datalist'_ :: CollectionNoProperties
 datalist'_ = datalist' []
 
-datalist_ ∷ ElementNoProperties
+datalist_ :: ElementNoProperties
 datalist_ = datalist []
 
-dd ∷ Element
+dd :: Element
 dd = make "dd"
 
-dd' ∷ Collection
+dd' :: Collection
 dd' = collection "dd"
 
-dd'_ ∷ CollectionNoProperties
+dd'_ :: CollectionNoProperties
 dd'_ = dd' []
 
-dd_ ∷ ElementNoProperties
+dd_ :: ElementNoProperties
 dd_ = dd []
 
-del ∷ Element
+del :: Element
 del = make "del"
 
-del' ∷ Collection
+del' :: Collection
 del' = collection "del"
 
-del'_ ∷ CollectionNoProperties
+del'_ :: CollectionNoProperties
 del'_ = del' []
 
-del_ ∷ ElementNoProperties
+del_ :: ElementNoProperties
 del_ = del []
 
-details ∷ Element
+details :: Element
 details = make "details"
 
-details' ∷ Collection
+details' :: Collection
 details' = collection "details"
 
-details'_ ∷ CollectionNoProperties
+details'_ :: CollectionNoProperties
 details'_ = details' []
 
-details_ ∷ ElementNoProperties
+details_ :: ElementNoProperties
 details_ = details []
 
-dfn ∷ Element
+dfn :: Element
 dfn = make "dfn"
 
-dfn' ∷ Collection
+dfn' :: Collection
 dfn' = collection "dfn"
 
-dfn'_ ∷ CollectionNoProperties
+dfn'_ :: CollectionNoProperties
 dfn'_ = dfn' []
 
-dfn_ ∷ ElementNoProperties
+dfn_ :: ElementNoProperties
 dfn_ = dfn []
 
-dialog ∷ Element
+dialog :: Element
 dialog = make "dialog"
 
-dialog' ∷ Collection
+dialog' :: Collection
 dialog' = collection "dialog"
 
-dialog'_ ∷ CollectionNoProperties
+dialog'_ :: CollectionNoProperties
 dialog'_ = dialog' []
 
-dialog_ ∷ ElementNoProperties
+dialog_ :: ElementNoProperties
 dialog_ = dialog []
 
-dir ∷ Element
+dir :: Element
 dir = make "dir"
 
-dir' ∷ Collection
+dir' :: Collection
 dir' = collection "dir"
 
-dir'_ ∷ CollectionNoProperties
+dir'_ :: CollectionNoProperties
 dir'_ = dir' []
 
-dir_ ∷ ElementNoProperties
+dir_ :: ElementNoProperties
 dir_ = dir []
 
-div ∷ Element
+div :: Element
 div = make "div"
 
-div' ∷ Collection
+div' :: Collection
 div' = collection "div"
 
-div'_ ∷ CollectionNoProperties
+div'_ :: CollectionNoProperties
 div'_ = div' []
 
-div_ ∷ ElementNoProperties
+div_ :: ElementNoProperties
 div_ = div []
 
-dl ∷ Element
+dl :: Element
 dl = make "dl"
 
-dl' ∷ Collection
+dl' :: Collection
 dl' = collection "dl"
 
-dl'_ ∷ CollectionNoProperties
+dl'_ :: CollectionNoProperties
 dl'_ = dl' []
 
-dl_ ∷ ElementNoProperties
+dl_ :: ElementNoProperties
 dl_ = dl []
 
-dt ∷ Element
+dt :: Element
 dt = make "dt"
 
-dt' ∷ Collection
+dt' :: Collection
 dt' = collection "dt"
 
-dt'_ ∷ CollectionNoProperties
+dt'_ :: CollectionNoProperties
 dt'_ = dt' []
 
-dt_ ∷ ElementNoProperties
+dt_ :: ElementNoProperties
 dt_ = dt []
 
-em ∷ Element
+em :: Element
 em = make "em"
 
-em' ∷ Collection
+em' :: Collection
 em' = collection "em"
 
-em'_ ∷ CollectionNoProperties
+em'_ :: CollectionNoProperties
 em'_ = em' []
 
-em_ ∷ ElementNoProperties
+em_ :: ElementNoProperties
 em_ = em []
 
-embed ∷ SelfClosingElement
+embed :: SelfClosingElement
 embed props = make "embed" props []
 
-embed_ ∷ SelfClosingElementNoProperties
+embed_ :: SelfClosingElementNoProperties
 embed_ = embed []
 
-fieldset ∷ Element
+fieldset :: Element
 fieldset = make "fieldset"
 
-fieldset' ∷ Collection
+fieldset' :: Collection
 fieldset' = collection "fieldset"
 
-fieldset'_ ∷ CollectionNoProperties
+fieldset'_ :: CollectionNoProperties
 fieldset'_ = fieldset' []
 
-fieldset_ ∷ ElementNoProperties
+fieldset_ :: ElementNoProperties
 fieldset_ = fieldset []
 
-figcaption ∷ Element
+figcaption :: Element
 figcaption = make "figcaption"
 
-figcaption' ∷ Collection
+figcaption' :: Collection
 figcaption' = collection "figcaption"
 
-figcaption'_ ∷ CollectionNoProperties
+figcaption'_ :: CollectionNoProperties
 figcaption'_ = figcaption' []
 
-figcaption_ ∷ ElementNoProperties
+figcaption_ :: ElementNoProperties
 figcaption_ = figcaption []
 
-figure ∷ Element
+figure :: Element
 figure = make "figure"
 
-figure' ∷ Collection
+figure' :: Collection
 figure' = collection "figure"
 
-figure'_ ∷ CollectionNoProperties
+figure'_ :: CollectionNoProperties
 figure'_ = figure' []
 
-figure_ ∷ ElementNoProperties
+figure_ :: ElementNoProperties
 figure_ = figure []
 
-font ∷ Element
+font :: Element
 font = make "font"
 
-font' ∷ Collection
+font' :: Collection
 font' = collection "font"
 
-font'_ ∷ CollectionNoProperties
+font'_ :: CollectionNoProperties
 font'_ = font' []
 
-font_ ∷ ElementNoProperties
+font_ :: ElementNoProperties
 font_ = font []
 
-footer ∷ Element
+footer :: Element
 footer = make "footer"
 
-footer' ∷ Collection
+footer' :: Collection
 footer' = collection "footer"
 
-footer'_ ∷ CollectionNoProperties
+footer'_ :: CollectionNoProperties
 footer'_ = footer' []
 
-footer_ ∷ ElementNoProperties
+footer_ :: ElementNoProperties
 footer_ = footer []
 
-form ∷ Element
+form :: Element
 form = make "form"
 
-form' ∷ Collection
+form' :: Collection
 form' = collection "form"
 
-form'_ ∷ CollectionNoProperties
+form'_ :: CollectionNoProperties
 form'_ = form' []
 
-form_ ∷ ElementNoProperties
+form_ :: ElementNoProperties
 form_ = form []
 
-frame ∷ Element
+frame :: Element
 frame = make "frame"
 
-frame' ∷ Collection
+frame' :: Collection
 frame' = collection "frame"
 
-frame'_ ∷ CollectionNoProperties
+frame'_ :: CollectionNoProperties
 frame'_ = frame' []
 
-frame_ ∷ ElementNoProperties
+frame_ :: ElementNoProperties
 frame_ = frame []
 
-frameset ∷ Element
+frameset :: Element
 frameset = make "frameset"
 
-frameset' ∷ Collection
+frameset' :: Collection
 frameset' = collection "frameset"
 
-frameset'_ ∷ CollectionNoProperties
+frameset'_ :: CollectionNoProperties
 frameset'_ = frameset' []
 
-frameset_ ∷ ElementNoProperties
+frameset_ :: ElementNoProperties
 frameset_ = frameset []
 
-h1 ∷ Element
+h1 :: Element
 h1 = make "h1"
 
-h1' ∷ Collection
+h1' :: Collection
 h1' = collection "h1"
 
-h1'_ ∷ CollectionNoProperties
+h1'_ :: CollectionNoProperties
 h1'_ = h1' []
 
-h1_ ∷ ElementNoProperties
+h1_ :: ElementNoProperties
 h1_ = h1 []
 
-head ∷ Element
+head :: Element
 head = make "head"
 
-head' ∷ Collection
+head' :: Collection
 head' = collection "head"
 
-head'_ ∷ CollectionNoProperties
+head'_ :: CollectionNoProperties
 head'_ = head' []
 
-head_ ∷ ElementNoProperties
+head_ :: ElementNoProperties
 head_ = head []
 
-header ∷ Element
+header :: Element
 header = make "header"
 
-header' ∷ Collection
+header' :: Collection
 header' = collection "header"
 
-header'_ ∷ CollectionNoProperties
+header'_ :: CollectionNoProperties
 header'_ = header' []
 
-header_ ∷ ElementNoProperties
+header_ :: ElementNoProperties
 header_ = header []
 
-hr ∷ SelfClosingElement
+hr :: SelfClosingElement
 hr props = make "hr" props []
 
-hr_ ∷ SelfClosingElementNoProperties
+hr_ :: SelfClosingElementNoProperties
 hr_ = hr []
 
-i ∷ Element
+i :: Element
 i = make "i"
 
-i' ∷ Collection
+i' :: Collection
 i' = collection "i"
 
-i'_ ∷ CollectionNoProperties
+i'_ :: CollectionNoProperties
 i'_ = i' []
 
-i_ ∷ ElementNoProperties
+i_ :: ElementNoProperties
 i_ = i []
 
-iframe ∷ Element
+iframe :: Element
 iframe = make "iframe"
 
-iframe' ∷ Collection
+iframe' :: Collection
 iframe' = collection "iframe"
 
-iframe'_ ∷ CollectionNoProperties
+iframe'_ :: CollectionNoProperties
 iframe'_ = iframe' []
 
-iframe_ ∷ ElementNoProperties
+iframe_ :: ElementNoProperties
 iframe_ = iframe []
 
-img ∷ SelfClosingElement
+img :: SelfClosingElement
 img props = make "img" props []
 
-img_ ∷ SelfClosingElementNoProperties
+img_ :: SelfClosingElementNoProperties
 img_ = img []
 
-input ∷ SelfClosingElement
+input :: SelfClosingElement
 input props = make "input" props []
 
-input_ ∷ SelfClosingElementNoProperties
+input_ :: SelfClosingElementNoProperties
 input_ = input []
 
-ins ∷ Element
+ins :: Element
 ins = make "ins"
 
-ins' ∷ Collection
+ins' :: Collection
 ins' = collection "ins"
 
-ins'_ ∷ CollectionNoProperties
+ins'_ :: CollectionNoProperties
 ins'_ = ins' []
 
-ins_ ∷ ElementNoProperties
+ins_ :: ElementNoProperties
 ins_ = ins []
 
-kbd ∷ Element
+kbd :: Element
 kbd = make "kbd"
 
-kbd' ∷ Collection
+kbd' :: Collection
 kbd' = collection "kbd"
 
-kbd'_ ∷ CollectionNoProperties
+kbd'_ :: CollectionNoProperties
 kbd'_ = kbd' []
 
-kbd_ ∷ ElementNoProperties
+kbd_ :: ElementNoProperties
 kbd_ = kbd []
 
-keygen ∷ SelfClosingElement
+keygen :: SelfClosingElement
 keygen props = make "keygen" props []
 
-keygen_ ∷ SelfClosingElementNoProperties
+keygen_ :: SelfClosingElementNoProperties
 keygen_ = keygen []
 
-label ∷ Element
+label :: Element
 label = make "label"
 
-label' ∷ Collection
+label' :: Collection
 label' = collection "label"
 
-label'_ ∷ CollectionNoProperties
+label'_ :: CollectionNoProperties
 label'_ = label' []
 
-label_ ∷ ElementNoProperties
+label_ :: ElementNoProperties
 label_ = label []
 
-legend ∷ Element
+legend :: Element
 legend = make "legend"
 
-legend' ∷ Collection
+legend' :: Collection
 legend' = collection "legend"
 
-legend'_ ∷ CollectionNoProperties
+legend'_ :: CollectionNoProperties
 legend'_ = legend' []
 
-legend_ ∷ ElementNoProperties
+legend_ :: ElementNoProperties
 legend_ = legend []
 
-li ∷ Element
+li :: Element
 li = make "li"
 
-li' ∷ Collection
+li' :: Collection
 li' = collection "li"
 
-li'_ ∷ CollectionNoProperties
+li'_ :: CollectionNoProperties
 li'_ = li' []
 
-li_ ∷ ElementNoProperties
+li_ :: ElementNoProperties
 li_ = li []
 
-main ∷ Element
+main :: Element
 main = make "main"
 
-main' ∷ Collection
+main' :: Collection
 main' = collection "main"
 
-main'_ ∷ CollectionNoProperties
+main'_ :: CollectionNoProperties
 main'_ = main' []
 
-main_ ∷ ElementNoProperties
+main_ :: ElementNoProperties
 main_ = main []
 
-map ∷ Element
+map :: Element
 map = make "map"
 
-map' ∷ Collection
+map' :: Collection
 map' = collection "map"
 
-map'_ ∷ CollectionNoProperties
+map'_ :: CollectionNoProperties
 map'_ = map' []
 
-map_ ∷ ElementNoProperties
+map_ :: ElementNoProperties
 map_ = map []
 
-mark ∷ Element
+mark :: Element
 mark = make "mark"
 
-mark' ∷ Collection
+mark' :: Collection
 mark' = collection "mark"
 
-mark'_ ∷ CollectionNoProperties
+mark'_ :: CollectionNoProperties
 mark'_ = mark' []
 
-mark_ ∷ ElementNoProperties
+mark_ :: ElementNoProperties
 mark_ = mark []
 
-menu ∷ Element
+menu :: Element
 menu = make "menu"
 
-menu' ∷ Collection
+menu' :: Collection
 menu' = collection "menu"
 
-menu'_ ∷ CollectionNoProperties
+menu'_ :: CollectionNoProperties
 menu'_ = menu' []
 
-menu_ ∷ ElementNoProperties
+menu_ :: ElementNoProperties
 menu_ = menu []
 
-menuitem ∷ SelfClosingElement
+menuitem :: SelfClosingElement
 menuitem props = make "menuitem" props []
 
-menuitem_ ∷ SelfClosingElementNoProperties
+menuitem_ :: SelfClosingElementNoProperties
 menuitem_ = menuitem []
 
-meter ∷ Element
+meter :: Element
 meter = make "meter"
 
-meter' ∷ Collection
+meter' :: Collection
 meter' = collection "meter"
 
-meter'_ ∷ CollectionNoProperties
+meter'_ :: CollectionNoProperties
 meter'_ = meter' []
 
-meter_ ∷ ElementNoProperties
+meter_ :: ElementNoProperties
 meter_ = meter []
 
-nav ∷ Element
+nav :: Element
 nav = make "nav"
 
-nav' ∷ Collection
+nav' :: Collection
 nav' = collection "nav"
 
-nav'_ ∷ CollectionNoProperties
+nav'_ :: CollectionNoProperties
 nav'_ = nav' []
 
-nav_ ∷ ElementNoProperties
+nav_ :: ElementNoProperties
 nav_ = nav []
 
-noframes ∷ Element
+noframes :: Element
 noframes = make "noframes"
 
-noframes' ∷ Collection
+noframes' :: Collection
 noframes' = collection "noframes"
 
-noframes'_ ∷ CollectionNoProperties
+noframes'_ :: CollectionNoProperties
 noframes'_ = noframes' []
 
-noframes_ ∷ ElementNoProperties
+noframes_ :: ElementNoProperties
 noframes_ = noframes []
 
-noscript ∷ Element
+noscript :: Element
 noscript = make "noscript"
 
-noscript' ∷ Collection
+noscript' :: Collection
 noscript' = collection "noscript"
 
-noscript'_ ∷ CollectionNoProperties
+noscript'_ :: CollectionNoProperties
 noscript'_ = noscript' []
 
-noscript_ ∷ ElementNoProperties
+noscript_ :: ElementNoProperties
 noscript_ = noscript []
 
-object ∷ Element
+object :: Element
 object = make "object"
 
-object' ∷ Collection
+object' :: Collection
 object' = collection "object"
 
-object'_ ∷ CollectionNoProperties
+object'_ :: CollectionNoProperties
 object'_ = object' []
 
-object_ ∷ ElementNoProperties
+object_ :: ElementNoProperties
 object_ = object []
 
-ol ∷ Element
+ol :: Element
 ol = make "ol"
 
-ol' ∷ Collection
+ol' :: Collection
 ol' = collection "ol"
 
-ol'_ ∷ CollectionNoProperties
+ol'_ :: CollectionNoProperties
 ol'_ = ol' []
 
-ol_ ∷ ElementNoProperties
+ol_ :: ElementNoProperties
 ol_ = ol []
 
-optgroup ∷ Element
+optgroup :: Element
 optgroup = make "optgroup"
 
-optgroup' ∷ Collection
+optgroup' :: Collection
 optgroup' = collection "optgroup"
 
-optgroup'_ ∷ CollectionNoProperties
+optgroup'_ :: CollectionNoProperties
 optgroup'_ = optgroup' []
 
-optgroup_ ∷ ElementNoProperties
+optgroup_ :: ElementNoProperties
 optgroup_ = optgroup []
 
-option ∷ Element
+option :: Element
 option = make "option"
 
-option' ∷ Collection
+option' :: Collection
 option' = collection "option"
 
-option'_ ∷ CollectionNoProperties
+option'_ :: CollectionNoProperties
 option'_ = option' []
 
-option_ ∷ ElementNoProperties
+option_ :: ElementNoProperties
 option_ = option []
 
-output ∷ Element
+output :: Element
 output = make "output"
 
-output' ∷ Collection
+output' :: Collection
 output' = collection "output"
 
-output'_ ∷ CollectionNoProperties
+output'_ :: CollectionNoProperties
 output'_ = output' []
 
-output_ ∷ ElementNoProperties
+output_ :: ElementNoProperties
 output_ = output []
 
-p ∷ Element
+p :: Element
 p = make "p"
 
-p' ∷ Collection
+p' :: Collection
 p' = collection "p"
 
-p'_ ∷ CollectionNoProperties
+p'_ :: CollectionNoProperties
 p'_ = p' []
 
-p_ ∷ ElementNoProperties
+p_ :: ElementNoProperties
 p_ = p []
 
-param ∷ SelfClosingElement
+param :: SelfClosingElement
 param props = make "param" props []
 
-param_ ∷ SelfClosingElementNoProperties
+param_ :: SelfClosingElementNoProperties
 param_ = param []
 
-picture ∷ Element
+picture :: Element
 picture = make "picture"
 
-picture' ∷ Collection
+picture' :: Collection
 picture' = collection "picture"
 
-picture'_ ∷ CollectionNoProperties
+picture'_ :: CollectionNoProperties
 picture'_ = picture' []
 
-picture_ ∷ ElementNoProperties
+picture_ :: ElementNoProperties
 picture_ = picture []
 
-pre ∷ Element
+pre :: Element
 pre = make "pre"
 
-pre' ∷ Collection
+pre' :: Collection
 pre' = collection "pre"
 
-pre'_ ∷ CollectionNoProperties
+pre'_ :: CollectionNoProperties
 pre'_ = pre' []
 
-pre_ ∷ ElementNoProperties
+pre_ :: ElementNoProperties
 pre_ = pre []
 
-progress ∷ Element
+progress :: Element
 progress = make "progress"
 
-progress' ∷ Collection
+progress' :: Collection
 progress' = collection "progress"
 
-progress'_ ∷ CollectionNoProperties
+progress'_ :: CollectionNoProperties
 progress'_ = progress' []
 
-progress_ ∷ ElementNoProperties
+progress_ :: ElementNoProperties
 progress_ = progress []
 
-q ∷ Element
+q :: Element
 q = make "q"
 
-q' ∷ Collection
+q' :: Collection
 q' = collection "q"
 
-q'_ ∷ CollectionNoProperties
+q'_ :: CollectionNoProperties
 q'_ = q' []
 
-q_ ∷ ElementNoProperties
+q_ :: ElementNoProperties
 q_ = q []
 
-rp ∷ Element
+rp :: Element
 rp = make "rp"
 
-rp' ∷ Collection
+rp' :: Collection
 rp' = collection "rp"
 
-rp'_ ∷ CollectionNoProperties
+rp'_ :: CollectionNoProperties
 rp'_ = rp' []
 
-rp_ ∷ ElementNoProperties
+rp_ :: ElementNoProperties
 rp_ = rp []
 
-rt ∷ Element
+rt :: Element
 rt = make "rt"
 
-rt' ∷ Collection
+rt' :: Collection
 rt' = collection "rt"
 
-rt'_ ∷ CollectionNoProperties
+rt'_ :: CollectionNoProperties
 rt'_ = rt' []
 
-rt_ ∷ ElementNoProperties
+rt_ :: ElementNoProperties
 rt_ = rt []
 
-ruby ∷ Element
+ruby :: Element
 ruby = make "ruby"
 
-ruby' ∷ Collection
+ruby' :: Collection
 ruby' = collection "ruby"
 
-ruby'_ ∷ CollectionNoProperties
+ruby'_ :: CollectionNoProperties
 ruby'_ = ruby' []
 
-ruby_ ∷ ElementNoProperties
+ruby_ :: ElementNoProperties
 ruby_ = ruby []
 
-s ∷ Element
+s :: Element
 s = make "s"
 
-s' ∷ Collection
+s' :: Collection
 s' = collection "s"
 
-s'_ ∷ CollectionNoProperties
+s'_ :: CollectionNoProperties
 s'_ = s' []
 
-s_ ∷ ElementNoProperties
+s_ :: ElementNoProperties
 s_ = s []
 
-samp ∷ Element
+samp :: Element
 samp = make "samp"
 
-samp' ∷ Collection
+samp' :: Collection
 samp' = collection "samp"
 
-samp'_ ∷ CollectionNoProperties
+samp'_ :: CollectionNoProperties
 samp'_ = samp' []
 
-samp_ ∷ ElementNoProperties
+samp_ :: ElementNoProperties
 samp_ = samp []
 
-script ∷ Element
+script :: Element
 script = make "script"
 
-script' ∷ Collection
+script' :: Collection
 script' = collection "script"
 
-script'_ ∷ CollectionNoProperties
+script'_ :: CollectionNoProperties
 script'_ = script' []
 
-script_ ∷ ElementNoProperties
+script_ :: ElementNoProperties
 script_ = script []
 
-section ∷ Element
+section :: Element
 section = make "section"
 
-section' ∷ Collection
+section' :: Collection
 section' = collection "section"
 
-section'_ ∷ CollectionNoProperties
+section'_ :: CollectionNoProperties
 section'_ = section' []
 
-section_ ∷ ElementNoProperties
+section_ :: ElementNoProperties
 section_ = section []
 
-select ∷ Element
+select :: Element
 select = make "select"
 
-select' ∷ Collection
+select' :: Collection
 select' = collection "select"
 
-select'_ ∷ CollectionNoProperties
+select'_ :: CollectionNoProperties
 select'_ = select' []
 
-select_ ∷ ElementNoProperties
+select_ :: ElementNoProperties
 select_ = select []
 
-small ∷ Element
+small :: Element
 small = make "small"
 
-small' ∷ Collection
+small' :: Collection
 small' = collection "small"
 
-small'_ ∷ CollectionNoProperties
+small'_ :: CollectionNoProperties
 small'_ = small' []
 
-small_ ∷ ElementNoProperties
+small_ :: ElementNoProperties
 small_ = small []
 
-source ∷ SelfClosingElement
+source :: SelfClosingElement
 source props = make "source" props []
 
-source_ ∷ SelfClosingElementNoProperties
+source_ :: SelfClosingElementNoProperties
 source_ = source []
 
-span ∷ Element
+span :: Element
 span = make "span"
 
-span' ∷ Collection
+span' :: Collection
 span' = collection "span"
 
-span'_ ∷ CollectionNoProperties
+span'_ :: CollectionNoProperties
 span'_ = span' []
 
-span_ ∷ ElementNoProperties
+span_ :: ElementNoProperties
 span_ = span []
 
-strike ∷ Element
+strike :: Element
 strike = make "strike"
 
-strike' ∷ Collection
+strike' :: Collection
 strike' = collection "strike"
 
-strike'_ ∷ CollectionNoProperties
+strike'_ :: CollectionNoProperties
 strike'_ = strike' []
 
-strike_ ∷ ElementNoProperties
+strike_ :: ElementNoProperties
 strike_ = strike []
 
-strong ∷ Element
+strong :: Element
 strong = make "strong"
 
-strong' ∷ Collection
+strong' :: Collection
 strong' = collection "strong"
 
-strong'_ ∷ CollectionNoProperties
+strong'_ :: CollectionNoProperties
 strong'_ = strong' []
 
-strong_ ∷ ElementNoProperties
+strong_ :: ElementNoProperties
 strong_ = strong []
 
-style ∷ Element
+style :: Element
 style = make "style"
 
-style' ∷ Collection
+style' :: Collection
 style' = collection "style"
 
-style'_ ∷ CollectionNoProperties
+style'_ :: CollectionNoProperties
 style'_ = style' []
 
-style_ ∷ ElementNoProperties
+style_ :: ElementNoProperties
 style_ = style []
 
-sub ∷ Element
+sub :: Element
 sub = make "sub"
 
-sub' ∷ Collection
+sub' :: Collection
 sub' = collection "sub"
 
-sub'_ ∷ CollectionNoProperties
+sub'_ :: CollectionNoProperties
 sub'_ = sub' []
 
-sub_ ∷ ElementNoProperties
+sub_ :: ElementNoProperties
 sub_ = sub []
 
-summary ∷ Element
+summary :: Element
 summary = make "summary"
 
-summary' ∷ Collection
+summary' :: Collection
 summary' = collection "summary"
 
-summary'_ ∷ CollectionNoProperties
+summary'_ :: CollectionNoProperties
 summary'_ = summary' []
 
-summary_ ∷ ElementNoProperties
+summary_ :: ElementNoProperties
 summary_ = summary []
 
-sup ∷ Element
+sup :: Element
 sup = make "sup"
 
-sup' ∷ Collection
+sup' :: Collection
 sup' = collection "sup"
 
-sup'_ ∷ CollectionNoProperties
+sup'_ :: CollectionNoProperties
 sup'_ = sup' []
 
-sup_ ∷ ElementNoProperties
+sup_ :: ElementNoProperties
 sup_ = sup []
 
-table ∷ Element
+table :: Element
 table = make "table"
 
-table' ∷ Collection
+table' :: Collection
 table' = collection "table"
 
-table'_ ∷ CollectionNoProperties
+table'_ :: CollectionNoProperties
 table'_ = table' []
 
-table_ ∷ ElementNoProperties
+table_ :: ElementNoProperties
 table_ = table []
 
-tbody ∷ Element
+tbody :: Element
 tbody = make "tbody"
 
-tbody' ∷ Collection
+tbody' :: Collection
 tbody' = collection "tbody"
 
-tbody'_ ∷ CollectionNoProperties
+tbody'_ :: CollectionNoProperties
 tbody'_ = tbody' []
 
-tbody_ ∷ ElementNoProperties
+tbody_ :: ElementNoProperties
 tbody_ = tbody []
 
-td ∷ Element
+td :: Element
 td = make "td"
 
-td' ∷ Collection
+td' :: Collection
 td' = collection "td"
 
-td'_ ∷ CollectionNoProperties
+td'_ :: CollectionNoProperties
 td'_ = td' []
 
-td_ ∷ ElementNoProperties
+td_ :: ElementNoProperties
 td_ = td []
 
-template ∷ Element
+template :: Element
 template = make "template"
 
-template' ∷ Collection
+template' :: Collection
 template' = collection "template"
 
-template'_ ∷ CollectionNoProperties
+template'_ :: CollectionNoProperties
 template'_ = template' []
 
-template_ ∷ ElementNoProperties
+template_ :: ElementNoProperties
 template_ = template []
 
 text
-  ∷ ∀ input message state
+  :: forall input message state
   . String
-  → Types.HTML input message state
+  -> Types.HTML input message state
 text
   = Types.Text
 
-textarea ∷ Element
+textarea :: Element
 textarea = make "textarea"
 
-textarea' ∷ Collection
+textarea' :: Collection
 textarea' = collection "textarea"
 
-textarea'_ ∷ CollectionNoProperties
+textarea'_ :: CollectionNoProperties
 textarea'_ = textarea' []
 
-textarea_ ∷ ElementNoProperties
+textarea_ :: ElementNoProperties
 textarea_ = textarea []
 
-tfoot ∷ Element
+tfoot :: Element
 tfoot = make "tfoot"
 
-tfoot' ∷ Collection
+tfoot' :: Collection
 tfoot' = collection "tfoot"
 
-tfoot'_ ∷ CollectionNoProperties
+tfoot'_ :: CollectionNoProperties
 tfoot'_ = tfoot' []
 
-tfoot_ ∷ ElementNoProperties
+tfoot_ :: ElementNoProperties
 tfoot_ = tfoot []
 
-th ∷ Element
+th :: Element
 th = make "th"
 
-th' ∷ Collection
+th' :: Collection
 th' = collection "th"
 
-th'_ ∷ CollectionNoProperties
+th'_ :: CollectionNoProperties
 th'_ = th' []
 
-th_ ∷ ElementNoProperties
+th_ :: ElementNoProperties
 th_ = th []
 
-thead ∷ Element
+thead :: Element
 thead = make "thead"
 
-thead' ∷ Collection
+thead' :: Collection
 thead' = collection "thead"
 
-thead'_ ∷ CollectionNoProperties
+thead'_ :: CollectionNoProperties
 thead'_ = thead' []
 
-thead_ ∷ ElementNoProperties
+thead_ :: ElementNoProperties
 thead_ = thead []
 
-time ∷ Element
+time :: Element
 time = make "time"
 
-time' ∷ Collection
+time' :: Collection
 time' = collection "time"
 
-time'_ ∷ CollectionNoProperties
+time'_ :: CollectionNoProperties
 time'_ = time' []
 
-time_ ∷ ElementNoProperties
+time_ :: ElementNoProperties
 time_ = time []
 
-title ∷ Element
+title :: Element
 title = make "title"
 
-title' ∷ Collection
+title' :: Collection
 title' = collection "title"
 
-title'_ ∷ CollectionNoProperties
+title'_ :: CollectionNoProperties
 title'_ = title' []
 
-title_ ∷ ElementNoProperties
+title_ :: ElementNoProperties
 title_ = title []
 
-tr ∷ Element
+tr :: Element
 tr = make "tr"
 
-tr' ∷ Collection
+tr' :: Collection
 tr' = collection "tr"
 
-tr'_ ∷ CollectionNoProperties
+tr'_ :: CollectionNoProperties
 tr'_ = tr' []
 
-tr_ ∷ ElementNoProperties
+tr_ :: ElementNoProperties
 tr_ = tr []
 
-track ∷ SelfClosingElement
+track :: SelfClosingElement
 track props = make "track" props []
 
-track_ ∷ SelfClosingElementNoProperties
+track_ :: SelfClosingElementNoProperties
 track_ = track []
 
-tt ∷ Element
+tt :: Element
 tt = make "tt"
 
-tt' ∷ Collection
+tt' :: Collection
 tt' = collection "tt"
 
-tt'_ ∷ CollectionNoProperties
+tt'_ :: CollectionNoProperties
 tt'_ = tt' []
 
-tt_ ∷ ElementNoProperties
+tt_ :: ElementNoProperties
 tt_ = tt []
 
-u ∷ Element
+u :: Element
 u = make "u"
 
-u' ∷ Collection
+u' :: Collection
 u' = collection "u"
 
-u'_ ∷ CollectionNoProperties
+u'_ :: CollectionNoProperties
 u'_ = u' []
 
-u_ ∷ ElementNoProperties
+u_ :: ElementNoProperties
 u_ = u []
 
-ul ∷ Element
+ul :: Element
 ul = make "ul"
 
-ul' ∷ Collection
+ul' :: Collection
 ul' = collection "ul"
 
-ul'_ ∷ CollectionNoProperties
+ul'_ :: CollectionNoProperties
 ul'_ = ul' []
 
-ul_ ∷ ElementNoProperties
+ul_ :: ElementNoProperties
 ul_ = ul []
 
-var ∷ Element
+var :: Element
 var = make "var"
 
-var' ∷ Collection
+var' :: Collection
 var' = collection "var"
 
-var'_ ∷ CollectionNoProperties
+var'_ :: CollectionNoProperties
 var'_ = var' []
 
-var_ ∷ ElementNoProperties
+var_ :: ElementNoProperties
 var_ = var []
 
-video ∷ Element
+video :: Element
 video = make "video"
 
-video' ∷ Collection
+video' :: Collection
 video' = collection "video"
 
-video'_ ∷ CollectionNoProperties
+video'_ :: CollectionNoProperties
 video'_ = video' []
 
-video_ ∷ ElementNoProperties
+video_ :: ElementNoProperties
 video_ = video []
 
-wbr ∷ SelfClosingElement
+wbr :: SelfClosingElement
 wbr props = make "wbr" props []
 
-wbr_ ∷ SelfClosingElementNoProperties
+wbr_ :: SelfClosingElementNoProperties
 wbr_ = wbr []

@@ -21,25 +21,25 @@ import Web.DOM.Text                 as Web.Text
 import Prelude
 
 render
-  ∷ ∀ input message state
+  :: forall input message state
   . Web.Document
-  → ( ∀ subinput suboutput submessage substate
+  -> ( forall subinput suboutput submessage substate
     . Types.Component subinput suboutput submessage substate
-    → Effect
-        { node    ∷ Web.Node
-        , events  ∷ FRP.Event suboutput
-        , update  ∷ subinput → Effect Unit
-        , destroy ∷ Effect Unit
+    -> Effect
+        { node    :: Web.Node
+        , events  :: FRP.Event suboutput
+        , update  :: subinput -> Effect Unit
+        , destroy :: Effect Unit
         }
     )
-  → Types.HTML input message state
-  → Effect
-      { node   ∷ Web.Node
-      , system ∷ Types.EventSystem input message state
+  -> Types.HTML input message state
+  -> Effect
+      { node   :: Web.Node
+      , system :: Types.EventSystem input message state
       }
 
 render document bootstrap = case _ of
-  Types.Text text → do
+  Types.Text text -> do
     node ← Web.createTextNode text document
 
     pure
@@ -47,7 +47,7 @@ render document bootstrap = case _ of
       , system: Types.emptySystem
       }
 
-  Types.Element { tagName, properties, children } → do
+  Types.Element { tagName, properties, children } -> do
     element ← Web.createElement tagName document
     let parentNode = Web.Element.toNode element
 
@@ -56,7 +56,7 @@ render document bootstrap = case _ of
 
     renderedChildren ← for children (render document bootstrap)
 
-    childSystems ← for renderedChildren \{ system, node } → do
+    childSystems ← for renderedChildren \{ system, node } -> do
       _ ← Web.appendChild node parentNode
       pure system
 
@@ -67,7 +67,7 @@ render document bootstrap = case _ of
       , system: Types.combineSystems propertySystem childSystem
       }
 
-  Types.Collection { tagName, properties, watcher } → do
+  Types.Collection { tagName, properties, watcher } -> do
     parent ← render document bootstrap
       (Types.Element { tagName, properties, children: [] })
 
@@ -78,8 +78,8 @@ render document bootstrap = case _ of
       childSystem
         = { cancel: Ref.read childSystems >>= traverse_ _.cancel
           , events: childEvents.event
-          , handleUpdate: \update → do
-              foreachE (watcher update) \instruction → do
+          , handleUpdate: \update -> do
+              foreachE (watcher update) \instruction -> do
                 systems ← Ref.read childSystems
 
                 { hasNewItem, systems: updatedSystems } ←
@@ -98,7 +98,7 @@ render document bootstrap = case _ of
                     pure { index, system }
 
                 case indexAndSystem of
-                  Just { index, system } → do
+                  Just { index, system } -> do
                     canceller ← FRP.subscribe system.events childEvents.push
 
                     let
@@ -116,30 +116,30 @@ render document bootstrap = case _ of
 
                     Ref.write systems' childSystems
 
-                  _ →
+                  _ ->
                     Ref.write updatedSystems childSystems
 
-              Ref.read childSystems >>= traverse_ \{ handleUpdate } →
+              Ref.read childSystems >>= traverse_ \{ handleUpdate } ->
                 handleUpdate update
           }
 
     pure parent { system = Types.combineSystems parent.system childSystem }
 
-  Types.Delegate delegate →
+  Types.Delegate delegate ->
     delegate # Types.runHTMLDelegateX
-      \(Types.HTMLDelegate { focus, application }) → do
+      \(Types.HTMLDelegate { focus, application }) -> do
         system ← bootstrap application
 
         pure
           { node: system.node
           , system:
               { events: filterMap focus.output system.events
-              , handleUpdate: \{ state, input } →
+              , handleUpdate: \{ state, input } ->
                   case focus.input input of
-                    Just subupdate →
+                    Just subupdate ->
                       system.update subupdate
 
-                    Nothing →
+                    Nothing ->
                       pure unit
               , cancel: system.destroy
               }

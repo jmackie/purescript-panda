@@ -29,9 +29,9 @@ data Input
 data Output
   = LoginAttempted
       ( ( State
-        → Aff (Array Error)
+        -> Aff (Array Error)
         )
-      → Aff Unit
+      -> Aff Unit
       )
 
 -- | Messages. These are internal events that are raised to the `update`
@@ -52,35 +52,35 @@ data Error
 -- | This is what our state looks like.
 
 type State
-  = { username ∷ String
-    , password ∷ String
+  = { username :: String
+    , password :: String
     }
 
 -- | Handle some sort of message.
 
-update ∷ P.Updater Input Output Message State
+update :: P.Updater Input Output Message State
 update emit dispatch { message, state } = case message of
 
-  UpdateEmail username →
-    dispatch \_ →
+  UpdateEmail username ->
+    dispatch \_ ->
       { input: Nothing
       , state: state
           { username = username
           }
       }
 
-  UpdatePassword password →
-    dispatch \_ →
+  UpdatePassword password ->
+    dispatch \_ ->
       { input: Nothing
       , state: state
           { password = password
           }
       }
 
-  SubmitForm event → do
+  SubmitForm event -> do
     P.preventDefault event
 
-    emit $ LoginAttempted \handleLogin → do
+    emit $ LoginAttempted \handleLogin -> do
       let
         isLoading flag
           = liftEffect $ dispatch
@@ -92,7 +92,7 @@ update emit dispatch { message, state } = case message of
       errors ← handleLogin state
       isLoading false
 
-      liftEffect $ errors # traverse_ \err →
+      liftEffect $ errors # traverse_ \err ->
         dispatch
           { input: Just (ShowError err)
           , state: _
@@ -100,7 +100,7 @@ update emit dispatch { message, state } = case message of
 
 -- | The specification for how we want the DOM to look.
 
-view ∷ PH.HTML Input Message State
+view :: PH.HTML Input Message State
 view
   = PH.form
       [ PP.className "SignUp__form"
@@ -119,18 +119,18 @@ view
               , PP.onInput' (Just <<< UpdateEmail)
               , PP.required true
               , PP.type_ "text"
-              , modifyClassWhen "SignUp__email" \{ input } →
+              , modifyClassWhen "SignUp__email" \{ input } ->
                   case input of
-                    ShowError UnknownEmail → Just "error"
-                    _                      → Nothing
+                    ShowError UnknownEmail -> Just "error"
+                    _                      -> Nothing
               ]
 
-          , fieldError \{ input, state } →
+          , fieldError \{ input, state } ->
               case input of
-                ShowError UnknownEmail →
+                ShowError UnknownEmail ->
                   Just "Hmm, are you sure we've met?"
 
-                _ →
+                _ ->
                   Nothing
           ]
 
@@ -146,18 +146,18 @@ view
               , PP.onInput' (Just <<< UpdatePassword)
               , PP.required true
               , PP.type_ "password"
-              , modifyClassWhen "SignUp__password" \{ input } →
+              , modifyClassWhen "SignUp__password" \{ input } ->
                   case input of
-                    ShowError UnknownEmail → Just "error"
-                    _                      → Nothing
+                    ShowError UnknownEmail -> Just "error"
+                    _                      -> Nothing
               ]
 
-          , fieldError \{ input, state } →
+          , fieldError \{ input, state } ->
               case input of
-                ShowError InvalidPassword →
+                ShowError InvalidPassword ->
                   Just "That's not how I remember it..."
 
-                _ →
+                _ ->
                   Nothing
           ]
 
@@ -166,25 +166,25 @@ view
           , PP.type_ "submit"
           , PP.value "Sign Up"
 
-          , PP.watch \{ input } →
+          , PP.watch \{ input } ->
               case input of
-                SetLoadingState flag →
+                SetLoadingState flag ->
                   PP.SetTo $ PP.value if flag
                     then "Loading..."
                     else "Sign Up"
 
-                _ →
+                _ ->
                   PP.Ignore
 
-          , PP.watch \{ input } →
+          , PP.watch \{ input } ->
               case input of
-                SetLoadingState true →
+                SetLoadingState true ->
                   PP.SetTo (PP.disabled true)
 
-                SetLoadingState false →
+                SetLoadingState false ->
                   PP.Clear
 
-                _ →
+                _ ->
                   PP.Ignore
           ]
       ]
@@ -194,42 +194,42 @@ view
 -- | attached. This is some BEM hackery, should probably exist in a library.
 
 modifyClassWhen
-  ∷ String
-  → ( { input ∷ Input
-      , state ∷ State
+  :: String
+  -> ( { input :: Input
+      , state :: State
       }
-    → Maybe String
+    -> Maybe String
     )
-  → PP.Property Input Message State
+  -> PP.Property Input Message State
 
 modifyClassWhen baseName check
-  = PP.watch \instruction →
+  = PP.watch \instruction ->
       PP.SetTo $ PP.className case check instruction of
-        Just modifier → baseName <> " " <> modifier
-        _             → baseName
+        Just modifier -> baseName <> " " <> modifier
+        _             -> baseName
 
 -- | Should we show the error for this field? Again, this basic incremental
 -- | logic should be pushed back into library code.
 
 fieldError
-  ∷ ( { input ∷ Input
-      , state ∷ State
+  :: ( { input :: Input
+      , state :: State
       }
-    → Maybe String
+    -> Maybe String
     )
-  → PH.HTML Input Message State
+  -> PH.HTML Input Message State
 
 fieldError handle
   = PH.span'
       [ PP.className "SignUp__error"
       ]
 
-      \raised →
+      \raised ->
         case handle raised of
-          Nothing →
+          Nothing ->
             [ A.Empty ]
 
-          Just xs →
+          Just xs ->
             [ A.Empty
             , A.Push (PH.text xs)
             ]
@@ -237,11 +237,11 @@ fieldError handle
 -- | The "application" for our signup form.
 
 application
-  ∷ ∀ input message state
-  . { input  ∷ input → Maybe Input
-    , output ∷ Output → Maybe message
+  :: forall input message state
+  . { input  :: input -> Maybe Input
+    , output :: Output -> Maybe message
     }
-  → PH.HTML input message state
+  -> PH.HTML input message state
 
 application focus
   = PH.delegate focus

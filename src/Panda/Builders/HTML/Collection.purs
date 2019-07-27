@@ -11,11 +11,11 @@ import Prelude
 -- | required DOM operations to reflect this in some list of children.
 
 sort
-  ∷ ∀ a b
+  :: forall a b
   . Ord a
   ⇒ Array a
-  → { state ∷ Array a
-    , moves ∷ Array (Algebra.Update b)
+  -> { state :: Array a
+    , moves :: Array (Algebra.Update b)
     }
 
 sort
@@ -25,11 +25,11 @@ sort
 -- | required DOM operations to reflect this in some list of children.
 
 sortBy
-  ∷ ∀ a b
-  . (a → a → Ordering)
-  → Array a
-  → { state ∷ Array a
-    , moves ∷ Array (Algebra.Update b)
+  :: forall a b
+  . (a -> a -> Ordering)
+  -> Array a
+  -> { state :: Array a
+    , moves :: Array (Algebra.Update b)
     }
 
 sortBy comparison focus
@@ -38,7 +38,7 @@ sortBy comparison focus
     }
   where
     instructions
-      ∷ ∀ anything
+      :: forall anything
       . Array (Algebra.Update anything)
     instructions
       = Algebra.sortBy comparison focus
@@ -51,12 +51,12 @@ sortBy comparison focus
 -- | some list of children.
 
 sortWith
-  ∷ ∀ a b c
+  :: forall a b c
   . Ord b
-  ⇒ (a → b)
-  → Array a
-  → { state ∷ Array a
-    , moves ∷ Array (Algebra.Update c)
+  ⇒ (a -> b)
+  -> Array a
+  -> { state :: Array a
+    , moves :: Array (Algebra.Update c)
     }
 
 sortWith

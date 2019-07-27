@@ -20,12 +20,12 @@ import Panda.Internal.Types (HTML(..), HTMLUpdate) as Exports
 -- | events and updates in which we're not so interested.
 
 delegate
-  ∷ ∀ input message state subinput suboutput submessage substate
-  . { input  ∷ input     → Maybe subinput
-    , output ∷ suboutput → Maybe message
+  :: forall input message state subinput suboutput submessage substate
+  . { input  :: input     -> Maybe subinput
+    , output :: suboutput -> Maybe message
     }
-  → Types.Component subinput suboutput submessage substate
-  → Types.HTML input message state
+  -> Types.Component subinput suboutput submessage substate
+  -> Types.HTML input message state
 
 delegate focus application
   = Types.Delegate

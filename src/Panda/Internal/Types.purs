@@ -17,21 +17,21 @@ import Prelude
 -- | you have input/output/message/state wrong or mixed up.
 
 type Updater input output message state
-  = ( output → Effect Unit )
+  = ( output -> Effect Unit )
 
-  → ( ( state
-      → { input ∷ Maybe input
-        , state ∷ state
+  -> ( ( state
+      -> { input :: Maybe input
+        , state :: state
         }
       )
-    → Effect Unit
+    -> Effect Unit
     )
 
-  → { message ∷ message
-    , state   ∷ state
+  -> { message :: message
+    , state   :: state
     }
 
-  → Effect Unit
+  -> Effect Unit
 
 -- | A component in Panda is a unit capable of running as an independent
 -- | application. This is often not what you want, though, so `delegate` can be
@@ -40,10 +40,10 @@ type Updater input output message state
 -- | messages.
 
 type Component input output message state
-  = { view         ∷ HTML input message state
-    , subscription ∷ FRP.Event message
-    , initial      ∷ { input ∷ input, state ∷ state }
-    , update       ∷ Updater input output message state
+  = { view         :: HTML input message state
+    , subscription :: FRP.Event message
+    , initial      :: { input :: input, state :: state }
+    , update       :: Updater input output message state
     }
 
 -- | Convenience type synonym for any update sets to HTML elements.
@@ -66,17 +66,17 @@ type HTMLUpdate input message state
 data HTML input message state
 
   = Element
-      { tagName    ∷ String
-      , properties ∷ Array (Property input message state)
-      , children   ∷ Array (HTML input message state)
+      { tagName    :: String
+      , properties :: Array (Property input message state)
+      , children   :: Array (HTML input message state)
       }
 
   | Collection
-      { tagName    ∷ String
-      , properties ∷ Array (Property input message state)
+      { tagName    :: String
+      , properties :: Array (Property input message state)
       , watcher
-          ∷ { input ∷ input, state ∷ state }
-          → Array (HTMLUpdate input message state)
+          :: { input :: input, state :: state }
+          -> Array (HTMLUpdate input message state)
       }
 
   | Text String
@@ -92,26 +92,26 @@ data HTML input message state
 newtype HTMLDelegate input message subinput suboutput submessage substate
   = HTMLDelegate
       { focus
-          ∷ { input  ∷ input     → Maybe subinput
-            , output ∷ suboutput → Maybe message
+          :: { input  :: input     -> Maybe subinput
+            , output :: suboutput -> Maybe message
             }
 
-      , application ∷ Component subinput suboutput submessage substate
+      , application :: Component subinput suboutput submessage substate
       }
 
 -- | An existentialised delegate is simply indexed by the input type and
 -- | message type that, respectively, it can map from and to.
 
-foreign import data HTMLDelegateX ∷ Type → Type → Type
+foreign import data HTMLDelegateX :: Type -> Type -> Type
 
 -- | Rather than the rank-2 encoding, the transformation from a delegate to an
 -- | existentialised delegate is just an unsafe coercion to "forget" those type
 -- | variables.
 
 mkHTMLDelegateX
-  ∷ ∀ input message subinput suboutput submessage substate
+  :: forall input message subinput suboutput submessage substate
   . HTMLDelegate input message subinput suboutput submessage substate
-  → HTMLDelegateX input message
+  -> HTMLDelegateX input message
 
 mkHTMLDelegateX
   = unsafeCoerce
@@ -123,13 +123,13 @@ mkHTMLDelegateX
 -- | obvious end user mistakes.
 
 runHTMLDelegateX
-  ∷ ∀ input message result
-  . ( ∀ subinput suboutput submessage substate
+  :: forall input message result
+  . ( forall subinput suboutput submessage substate
     . HTMLDelegate input message subinput suboutput submessage substate
-    → result
+    -> result
     )
-  → HTMLDelegateX input message
-  → result
+  -> HTMLDelegateX input message
+  -> result
 
 runHTMLDelegateX f
   = f <<< unsafeCoerce
@@ -141,18 +141,18 @@ runHTMLDelegateX f
 data Property input message state
 
   = Fixed
-      { key   ∷ String
-      , value ∷ String
+      { key   :: String
+      , value :: String
       }
 
   | Producer
-      { key     ∷ Producer
-      , onEvent ∷ DOM.Event → Maybe message
+      { key     :: Producer
+      , onEvent :: DOM.Event -> Maybe message
       }
 
   | Dynamic
-      ( { input ∷ input, state ∷ state }
-      → ShouldUpdate (Property input message state)
+      ( { input :: input, state :: state }
+      -> ShouldUpdate (Property input message state)
       )
 
 -- | Should we update? When a dynamic property receives an input, this algebra
@@ -191,36 +191,36 @@ data Producer
   | OnMouseUp
   | OnSubmit
 
-derive instance eqProducer  ∷ Eq Producer
+derive instance eqProducer  :: Eq Producer
 
 -- | Convert a Producer to its html attribute name.
 
-producerToAttribute ∷ Producer → String
+producerToAttribute :: Producer -> String
 producerToAttribute = case _ of
-  OnBlur        → "blur"
-  OnChange      → "change"
-  OnClick       → "click"
-  OnDoubleClick → "doubleclick"
-  OnDrag        → "drag"
-  OnDragEnd     → "dragend"
-  OnDragEnter   → "dragenter"
-  OnDragLeave   → "dragleave"
-  OnDragOver    → "dragover"
-  OnDragStart   → "dragstart"
-  OnDrop        → "drop"
-  OnError       → "error"
-  OnFocus       → "focus"
-  OnInput       → "input"
-  OnKeyDown     → "keydown"
-  OnKeyUp       → "keyup"
-  OnMouseDown   → "mousedown"
-  OnMouseEnter  → "mouseenter"
-  OnMouseLeave  → "mouseleave"
-  OnMouseMove   → "mousemove"
-  OnMouseOver   → "mouseover"
-  OnMouseOut    → "mouseout"
-  OnMouseUp     → "mouseup"
-  OnSubmit      → "submit"
+  OnBlur        -> "blur"
+  OnChange      -> "change"
+  OnClick       -> "click"
+  OnDoubleClick -> "doubleclick"
+  OnDrag        -> "drag"
+  OnDragEnd     -> "dragend"
+  OnDragEnter   -> "dragenter"
+  OnDragLeave   -> "dragleave"
+  OnDragOver    -> "dragover"
+  OnDragStart   -> "dragstart"
+  OnDrop        -> "drop"
+  OnError       -> "error"
+  OnFocus       -> "focus"
+  OnInput       -> "input"
+  OnKeyDown     -> "keydown"
+  OnKeyUp       -> "keyup"
+  OnMouseDown   -> "mousedown"
+  OnMouseEnter  -> "mouseenter"
+  OnMouseLeave  -> "mouseleave"
+  OnMouseMove   -> "mousemove"
+  OnMouseOver   -> "mouseover"
+  OnMouseOut    -> "mouseout"
+  OnMouseUp     -> "mouseup"
+  OnSubmit      -> "submit"
 
 -- | An event system is the data structure that Panda uses internally to
 -- | communicate properties of components. We can use this to cancel a system
@@ -230,13 +230,13 @@ producerToAttribute = case _ of
 -- | externally, which is not true of bootstrapped applications.
 
 type EventSystem input message state
-  = { cancel ∷ Effect Unit
-    , events ∷ FRP.Event message
+  = { cancel :: Effect Unit
+    , events :: FRP.Event message
     , handleUpdate
-        ∷ { input ∷ input
-          , state ∷ state
+        :: { input :: input
+          , state :: state
           }
-        → Effect Unit
+        -> Effect Unit
     }
 
 -- | Until I win my quest to make FRP.Event.(<>) equal to FRP.Event.(<|>), this
@@ -247,12 +247,12 @@ type EventSystem input message state
 -- | An event system that does nothing and controls nothing.
 
 emptySystem
-  ∷ ∀ input message state
+  :: forall input message state
   . EventSystem input message state
 
 emptySystem
   = { events: empty
-    , handleUpdate: \_ → pure unit
+    , handleUpdate: \_ -> pure unit
     , cancel: pure unit
     }
 
@@ -260,17 +260,17 @@ emptySystem
 -- | the input systems.
 
 combineSystems
-  ∷ ∀ input message state
+  :: forall input message state
   . EventSystem input message state
-  → EventSystem input message state
-  → EventSystem input message state
+  -> EventSystem input message state
+  -> EventSystem input message state
 
 combineSystems this that
   = { cancel: do
         this.cancel
         that.cancel
 
-    , handleUpdate: \update → do
+    , handleUpdate: \update -> do
         this.handleUpdate update
         that.handleUpdate update
 
@@ -280,9 +280,9 @@ combineSystems this that
 -- | Like `mconcat` for `EventSystem`.
 
 foldSystems
-  ∷ ∀ input message state
+  :: forall input message state
   . Array (EventSystem input message state)
-  → EventSystem input message state
+  -> EventSystem input message state
 
 foldSystems
   = foldl combineSystems emptySystem
