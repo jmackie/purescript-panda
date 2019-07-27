@@ -6,6 +6,5 @@ module Panda.Property
 -- | This file exports the property API for Panda applications. Everything that
 -- | is accessible under the `PP` namespace comes from this file as an import
 -- | by proxy.
-
 import Panda.Builders.Properties as Builders
-import Panda.Internal.Types      ( Producer(..), Property(..), ShouldUpdate(..)) as ExportedTypes
+import Panda.Internal.Types (Producer(..), Property(..), ShouldUpdate(..)) as ExportedTypes

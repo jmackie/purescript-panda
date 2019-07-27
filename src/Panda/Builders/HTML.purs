@@ -1,6 +1,5 @@
 module Panda.Builders.HTML
   ( module Collection
-
   , a
   , a'
   , a'_
@@ -434,79 +433,70 @@ module Panda.Builders.HTML
   , wbr_
   ) where
 
-import Panda.Internal.Types           as Types
+import Panda.Internal.Types as Types
 import Panda.Builders.HTML.Collection as Collection
 
 -- | A fully-polymorphic component (and therefore either an element or text).
-
 type Element
-  = forall input message state
-  . Array (Types.Property input message state)
-  -> Array (Types.HTML input message state)
-  -> Types.HTML input message state
+  = forall input message state.
+    Array (Types.Property input message state) ->
+    Array (Types.HTML input message state) ->
+    Types.HTML input message state
 
 -- | A fully-polymorphic component with no properties.
-
 type ElementNoProperties
-  = forall input message state
-  . Array (Types.HTML input message state)
-  -> Types.HTML input message state
+  = forall input message state.
+    Array (Types.HTML input message state) ->
+    Types.HTML input message state
 
 -- | A fully-polymorphic component with no children.
-
 type SelfClosingElement
-  = forall input message state
-  . Array (Types.Property input message state)
-  -> Types.HTML input message state
+  = forall input message state.
+    Array (Types.Property input message state) ->
+    Types.HTML input message state
 
 -- | A fully-polymorphic component with no children or properties.
-
 type SelfClosingElementNoProperties
-  = forall input message state
-  . Types.HTML input message state
+  = forall input message state.
+    Types.HTML input message state
 
 -- | A fully-polymorphic container component.
-
 type Collection
-  = forall input message state
-  . Array (Types.Property input message state)
-  -> ( { input :: input, state :: state }
-    -> Array (Types.HTMLUpdate input message state)
-    )
-  -> Types.HTML input message state
+  = forall input message state.
+    Array (Types.Property input message state) ->
+    ( { input :: input, state :: state } ->
+      Array (Types.HTMLUpdate input message state)
+    ) ->
+    Types.HTML input message state
 
 -- | A fully-polymorphic container component with no properties.
-
 type CollectionNoProperties
-  = forall input message state
-  . ( { input :: input, state :: state }
-    -> Array (Types.HTMLUpdate input message state)
-    )
-  -> Types.HTML input message state
+  = forall input message state.
+    ( { input :: input, state :: state } ->
+      Array (Types.HTMLUpdate input message state)
+    ) ->
+    Types.HTML input message state
 
 -- | Make an element from its component parts.
-
 make :: String -> Element
-make tagName properties children
-  = Types.Element
-      { tagName
-      , properties
-      , children
-      }
+make tagName properties children =
+  Types.Element
+    { tagName
+    , properties
+    , children
+    }
 
 -- | Make a "collection" element from some container. These are collections in
 -- | the Panda sense - element containers that are open to incremental updates.
-
 collection :: String -> Collection
-collection tagName properties watcher
-  = Types.Collection
-      { tagName
-      , properties
-      , watcher
-      }
+collection tagName properties watcher =
+  Types.Collection
+    { tagName
+    , properties
+    , watcher
+    }
 
 ---
-
 a :: Element
 a = make "a"
 
@@ -1641,12 +1631,11 @@ template'_ = template' []
 template_ :: ElementNoProperties
 template_ = template []
 
-text
-  :: forall input message state
-  . String
-  -> Types.HTML input message state
-text
-  = Types.Text
+text ::
+  forall input message state.
+  String ->
+  Types.HTML input message state
+text = Types.Text
 
 textarea :: Element
 textarea = make "textarea"

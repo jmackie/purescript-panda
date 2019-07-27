@@ -1,10 +1,8 @@
 module Panda.Builders.Properties
   ( module Watchers
   , module Producers
-
-  , FormEncodingType (..)
-  , Target           (..)
-
+  , FormEncodingType(..)
+  , Target(..)
   , accept
   , accesskey
   , action
@@ -108,28 +106,24 @@ module Panda.Builders.Properties
   ) where
 
 import Data.HTTP.Method as HTTP
-
-import Panda.Internal.Types              as Types
+import Panda.Internal.Types as Types
 import Panda.Builders.Property.Producers as Producers
-import Panda.Builders.Property.Watchers  as Watchers
-
+import Panda.Builders.Property.Watchers as Watchers
 import Data.String.CodeUnits (singleton)
-import Prelude               ((<<<))
+import Prelude ((<<<))
 
 -- | A fully-polymorphic property.
-
 type StaticProperty
-  = forall message update state
-  . Types.Property message update state
+  = forall message update state.
+    Types.Property message update state
 
 -- | Make a property.
-
 make :: String -> String -> StaticProperty
-make key setting
-  = Types.Fixed
-      { key
-      , value: setting
-      }
+make key setting =
+  Types.Fixed
+    { key
+    , value: setting
+    }
 
 accept :: String -> StaticProperty
 accept = make "accept"
@@ -228,9 +222,9 @@ dirname :: String -> StaticProperty
 dirname = make "dirname"
 
 disabled :: Boolean -> StaticProperty
-disabled
-    = make "disabled"
-  <<< if _ then "disabled" else ""
+disabled =
+  make "disabled"
+    <<< if _ then "disabled" else ""
 
 download :: String -> StaticProperty
 download = make "download"
@@ -241,10 +235,12 @@ data FormEncodingType
   | TextPlain
 
 enctype :: FormEncodingType -> StaticProperty
-enctype = make "enctype" <<< case _ of
-  XWWWFormUrlEncoded -> "x-www-form-urlencoded"
-  MultipartFormData  -> "multipart/form-data"
-  TextPlain          -> "text/plain"
+enctype =
+  make "enctype"
+    <<< case _ of
+        XWWWFormUrlEncoded -> "x-www-form-urlencoded"
+        MultipartFormData -> "multipart/form-data"
+        TextPlain -> "text/plain"
 
 for :: String -> StaticProperty
 for = make "for"
@@ -319,9 +315,11 @@ media :: String -> StaticProperty
 media = make "media"
 
 method :: HTTP.Method -> StaticProperty
-method = make "method" <<< case _ of
-  HTTP.POST -> "POST"
-  _         -> "GET"
+method =
+  make "method"
+    <<< case _ of
+        HTTP.POST -> "POST"
+        _ -> "GET"
 
 min :: String -> StaticProperty
 min = make "min"
@@ -336,9 +334,9 @@ name :: String -> StaticProperty
 name = make "name"
 
 novalidate :: Boolean -> StaticProperty
-novalidate
-    = make "novalidate"
-  <<< if _ then "novalidate" else ""
+novalidate =
+  make "novalidate"
+    <<< if _ then "novalidate" else ""
 
 open :: String -> StaticProperty
 open = make "open"
@@ -371,9 +369,9 @@ rel :: String -> StaticProperty
 rel = make "rel"
 
 required :: Boolean -> StaticProperty
-required
-    = make "required"
-  <<< if _ then "required" else ""
+required =
+  make "required"
+    <<< if _ then "required" else ""
 
 reversed :: String -> StaticProperty
 reversed = make "reversed"
@@ -439,11 +437,13 @@ data Target
   | Top
 
 target :: Target -> StaticProperty
-target = make "target" <<< case _ of
-  Self   -> "_self"
-  Blank  -> "_blank"
-  Parent -> "_parent"
-  Top    -> "_top"
+target =
+  make "target"
+    <<< case _ of
+        Self -> "_self"
+        Blank -> "_blank"
+        Parent -> "_parent"
+        Top -> "_top"
 
 type_ :: String -> StaticProperty
 type_ = make "type"

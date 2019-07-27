@@ -52,86 +52,74 @@ module Panda.Builders.Property.Producers
   , onSubmit_
   ) where
 
-import Control.Monad.Except      (runExcept)
-import Data.Maybe                (Maybe(..))
-import Data.Either               (either)
-import Foreign                   (readInt, readString, unsafeToForeign) as F
-import Foreign.Index             (readProp) as F
-import Panda.Internal.Types      as Types
-import Unsafe.Coerce             (unsafeCoerce)
-import Web.Event.Internal.Types  (Event) as Web
-import Web.HTML.Event.DragEvent  (DragEvent) as Web
+import Control.Monad.Except (runExcept)
+import Data.Maybe (Maybe(..))
+import Data.Either (either)
+import Foreign (readInt, readString, unsafeToForeign) as F
+import Foreign.Index (readProp) as F
+import Panda.Internal.Types as Types
+import Unsafe.Coerce (unsafeCoerce)
+import Web.Event.Internal.Types (Event) as Web
+import Web.HTML.Event.DragEvent (DragEvent) as Web
 import Web.HTML.Event.ErrorEvent (ErrorEvent) as Web
-import Web.UIEvent.FocusEvent    (FocusEvent) as Web
+import Web.UIEvent.FocusEvent (FocusEvent) as Web
 import Web.UIEvent.KeyboardEvent (KeyboardEvent) as Web
-import Web.UIEvent.MouseEvent    (MouseEvent) as Web
-
+import Web.UIEvent.MouseEvent (MouseEvent) as Web
 import Prelude
 
 -- | Given an event, get the value of the target element, if available, using
 -- | the foreign interface.
-
-targetValue
-  :: forall message
-  . (String -> Maybe message)
-  -> Web.Event
-  -> Maybe message
-
-targetValue handler ev
-  = either (\_ -> Nothing) handler (runExcept result)
+targetValue ::
+  forall message.
+  (String -> Maybe message) ->
+  Web.Event ->
+  Maybe message
+targetValue handler ev = either (\_ -> Nothing) handler (runExcept result)
   where
-    result
-        = F.readProp "target" (F.unsafeToForeign ev)
+  result =
+    F.readProp "target" (F.unsafeToForeign ev)
       >>= F.readProp "value"
       >>= F.readString
 
 -- | Get a keycode, if available, from some event.
-
-keyCode
-  :: forall message
-  . (Int -> Maybe message)
-  -> Web.Event
-  -> Maybe message
-
-keyCode handler ev
-  = either (\_ -> Nothing) handler (runExcept result)
+keyCode ::
+  forall message.
+  (Int -> Maybe message) ->
+  Web.Event ->
+  Maybe message
+keyCode handler ev = either (\_ -> Nothing) handler (runExcept result)
   where
-    result
-        = F.readProp "keyCode" (F.unsafeToForeign ev)
+  result =
+    F.readProp "keyCode" (F.unsafeToForeign ev)
       >>= F.readInt
 
 type Producer middle
-  = forall input message state
-  . (middle -> Maybe message)
-  -> Types.Property input message state
+  = forall input message state.
+    (middle -> Maybe message) ->
+    Types.Property input message state
 
 -- | Make a maybe-event-firing producer.
-
-makeProducer
-  :: forall message
-  . Types.Producer
-  -> Producer message
-
-makeProducer key onEvent
-  = Types.Producer
-      { key
-      , onEvent: onEvent <<< unsafeCoerce
-      }
+makeProducer ::
+  forall message.
+  Types.Producer ->
+  Producer message
+makeProducer key onEvent =
+  Types.Producer
+    { key
+    , onEvent: onEvent <<< unsafeCoerce
+    }
 
 type Producer_ middle
-  = forall input message state
-  . (middle -> message)
-  -> Types.Property input message state
+  = forall input message state.
+    (middle -> message) ->
+    Types.Property input message state
 
 -- | Make a `Producer_` value.
-
-makeProducer_
-  :: forall message
-  . Types.Producer
-  -> Producer_ message
-
-makeProducer_ key onEvent
-  = makeProducer key (Just <<< onEvent)
+makeProducer_ ::
+  forall message.
+  Types.Producer ->
+  Producer_ message
+makeProducer_ key onEvent = makeProducer key (Just <<< onEvent)
 
 onBlur :: Producer Web.FocusEvent
 onBlur = makeProducer Types.OnBlur
