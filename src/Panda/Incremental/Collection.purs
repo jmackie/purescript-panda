@@ -41,10 +41,10 @@ execute { parent, systems, render, update } = case update of
     pure { systems: [], hasNewItem: Nothing }
   -- Remove the last element from the collection.
   Algebra.Pop -> do
-    final ← Web.lastChild parent
+    final <- Web.lastChild parent
     case final, Array.unsnoc systems of
       Just element, Just { init, last } -> do
-        _ ← Web.removeChild element parent
+        _ <- Web.removeChild element parent
         last.cancel
         pure { systems: init, hasNewItem: Nothing }
       _, _ -> pure { systems, hasNewItem: Nothing }
@@ -75,9 +75,9 @@ execute { parent, systems, render, update } = case update of
           }
   -- Insert an element at a particular index.
   Algebra.InsertAt index spec -> do
-    { system, node } ← render spec
-    atIndex ← Web.childNodes parent >>= Web.item index
-    _ ← case atIndex of
+    { system, node } <- render spec
+    atIndex <- Web.childNodes parent >>= Web.item index
+    _ <- case atIndex of
       Just reference -> Web.insertBefore reference node parent
       Nothing -> Web.appendChild node parent
     pure case Array.insertAt index system systems of
@@ -109,16 +109,16 @@ execute { parent, systems, render, update } = case update of
         GT -> Just to
 
       updatedSystems = do
-        system ← Array.index systems from
-        tmp ← Array.deleteAt from systems
+        system <- Array.index systems from
+        tmp <- Array.deleteAt from systems
         Array.insertAt to system systems
-    sourceElement ← Web.childNodes parent >>= Web.item from
+    sourceElement <- Web.childNodes parent >>= Web.item from
     case referenceIndex, updatedSystems of
       Just index, Just updated -> do
-        referenceElement ← Web.childNodes parent >>= Web.item index
+        referenceElement <- Web.childNodes parent >>= Web.item index
         case sourceElement of
           Just source -> do
-            _ ← case referenceElement of
+            _ <- case referenceElement of
               Just reference -> Web.insertBefore source reference parent
               _ -> Web.appendChild source parent
             pure
@@ -137,7 +137,7 @@ execute { parent, systems, render, update } = case update of
           }
   -- Swap the nodes at two given indices.
   Algebra.Swap from to -> do
-    { systems: updated } ←
+    { systems: updated } <-
       execute
         { parent
         , systems

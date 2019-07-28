@@ -80,7 +80,7 @@ update emit dispatch { message, state } = case message of
                     , state: _
                     }
           isLoading true
-          errors ← handleLogin state
+          errors <- handleLogin state
           isLoading false
           liftEffect $ errors
             # traverse_ \err ->

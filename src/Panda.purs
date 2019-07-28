@@ -37,7 +37,7 @@ runApplicationInBody configuration =
   Web.window >>= Web.document >>= Web.body
     >>= case _ of
         Just body -> do
-          controller ← runApplicationInNode configuration (Web.toNode body)
+          controller <- runApplicationInNode configuration (Web.toNode body)
           pure (Just controller)
         Nothing -> pure Nothing
 
@@ -50,10 +50,10 @@ runApplicationInNode ::
   Web.Node ->
   Effect (Controller input output)
 runApplicationInNode configuration parent = do
-  document ← Web.window >>= Web.document
+  document <- Web.window >>= Web.document
   let
     document' = Web.toDocument document
-  { destroy, events, update, node } ←
+  { destroy, events, update, node } <-
     bootstrap document' configuration
-  _ ← Web.appendChild node parent
+  _ <- Web.appendChild node parent
   pure { destroy, events, update }

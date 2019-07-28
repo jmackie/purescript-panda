@@ -28,22 +28,22 @@ bootstrap ::
     , destroy :: Effect Unit
     }
 bootstrap document { view, subscription, initial, update } = do
-  result@{ system, node } ← HTML.render document (bootstrap document) view
-  stateRef ← Ref.new initial.state
-  external ← FRP.create
+  result@{ system, node } <- HTML.render document (bootstrap document) view
+  stateRef <- Ref.new initial.state
+  external <- FRP.create
   let
     events :: FRP.Event message
     events = subscription <|> system.events
-  cancel ←
+  cancel <-
     FRP.subscribe events \message -> do
-      state ← Ref.read stateRef
+      state <- Ref.read stateRef
       -- When a "message" is raised by the body, we call the supplied update
       -- function with an "emitter" (to trigger external events), a "dispatcher"
       -- (to update internal state and view), and the message in question, along
       -- with the state at that moment.
       { message, state }
         # update external.push \callback -> do
-            mostRecentState ← Ref.read stateRef
+            mostRecentState <- Ref.read stateRef
             let
               new@{ state } = callback mostRecentState
             Ref.write new.state stateRef
@@ -55,7 +55,7 @@ bootstrap document { view, subscription, initial, update } = do
     { node
     , update:
       \input -> do
-        state ← Ref.read stateRef -- Is this a hack?
+        state <- Ref.read stateRef -- Is this a hack?
         system.handleUpdate { input, state }
     , events: external.event
     , destroy:

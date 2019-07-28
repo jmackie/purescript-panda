@@ -65,7 +65,7 @@ renderStaticProducer ::
   (Web.Event -> Maybe message) ->
   Effect (Types.EventSystem input message state)
 renderStaticProducer element key onEvent = do
-  { push, event: events } ← FRP.create
+  { push, event: events } <- FRP.create
   let
     handler = traverse_ push <<< onEvent
 
@@ -88,8 +88,8 @@ renderDynamic ::
   ) ->
   Effect (Types.EventSystem input message state)
 renderDynamic element watcher = do
-  subproducer ← FRP.create
-  propertyRef ← Ref.new Nothing
+  subproducer <- FRP.create
+  propertyRef <- Ref.new Nothing
   pure
     { cancel:
       Ref.read propertyRef
@@ -112,8 +112,8 @@ renderDynamic element watcher = do
           Types.Clear -> clearListener
           Types.SetTo nextProperty -> do
             clearListener
-            property ← render element nextProperty
-            canceller ← FRP.subscribe property.events subproducer.push
+            property <- render element nextProperty
+            canceller <- FRP.subscribe property.events subproducer.push
             let
               system' =
                 Just

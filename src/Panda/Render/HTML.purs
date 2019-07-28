@@ -38,22 +38,22 @@ render ::
     }
 render document bootstrap = case _ of
   Types.Text text -> do
-    node ← Web.createTextNode text document
+    node <- Web.createTextNode text document
     pure
       { node: Web.Text.toNode node
       , system: Types.emptySystem
       }
   Types.Element { tagName, properties, children } -> do
-    element ← Web.createElement tagName document
+    element <- Web.createElement tagName document
     let
       parentNode = Web.Element.toNode element
-    propertySystems ← traverse (Property.render element) properties
+    propertySystems <- traverse (Property.render element) properties
     let
       propertySystem = Types.foldSystems propertySystems
-    renderedChildren ← for children (render document bootstrap)
-    childSystems ←
+    renderedChildren <- for children (render document bootstrap)
+    childSystems <-
       for renderedChildren \{ system, node } -> do
-        _ ← Web.appendChild node parentNode
+        _ <- Web.appendChild node parentNode
         pure system
     let
       childSystem = Types.foldSystems childSystems
@@ -62,11 +62,11 @@ render document bootstrap = case _ of
       , system: Types.combineSystems propertySystem childSystem
       }
   Types.Collection { tagName, properties, watcher } -> do
-    parent ←
+    parent <-
       render document bootstrap
         (Types.Element { tagName, properties, children: [] })
-    childSystems ← Ref.new []
-    childEvents ← FRP.create
+    childSystems <- Ref.new []
+    childEvents <- FRP.create
     let
       childSystem =
         { cancel: Ref.read childSystems >>= traverse_ _.cancel
@@ -74,8 +74,8 @@ render document bootstrap = case _ of
         , handleUpdate:
           \update -> do
             foreachE (watcher update) \instruction -> do
-              systems ← Ref.read childSystems
-              { hasNewItem, systems: updatedSystems } ←
+              systems <- Ref.read childSystems
+              { hasNewItem, systems: updatedSystems } <-
                 execute
                   { parent: parent.node
                   , render: render document bootstrap
@@ -84,12 +84,12 @@ render document bootstrap = case _ of
                   }
               let
                 indexAndSystem = do
-                  index ← hasNewItem
-                  system ← Array.index updatedSystems index
+                  index <- hasNewItem
+                  system <- Array.index updatedSystems index
                   pure { index, system }
               case indexAndSystem of
                 Just { index, system } -> do
-                  canceller ← FRP.subscribe system.events childEvents.push
+                  canceller <- FRP.subscribe system.events childEvents.push
                   let
                     updated =
                       system
@@ -113,7 +113,7 @@ render document bootstrap = case _ of
   Types.Delegate delegate ->
     delegate
       # Types.runHTMLDelegateX \(Types.HTMLDelegate { focus, application }) -> do
-          system ← bootstrap application
+          system <- bootstrap application
           pure
             { node: system.node
             , system:
