@@ -1,5 +1,5 @@
 { name =
-    "pandas"
+    "panda"
 , dependencies =
     [ "prelude"
     , "foldable-traversable"
