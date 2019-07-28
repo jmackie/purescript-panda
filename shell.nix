@@ -1,7 +1,13 @@
 # NOTE: This should work on OSX but I haven't tested it...
-
-{ pkgs ? import <nixpkgs> {} }:
 let
+  pkgs =
+    let rev = "9ff408a2a4cb784160afef9a43c73a7a37ba38c9";
+    in import (builtins.fetchTarball {
+      name = "nixpkgs-${rev}";
+      url = "https://github.com/nixos/nixpkgs/archive/${rev}.tar.gz";
+      sha256 = "0dv0yhz7cscw6vrn3vnwpf2pa1nbpwh5dn3229bvkinj42yig0z9";
+    }) {};
+
   fetchReleaseBin = { bin, version, url, sha256, buildInputs, extract }:
     pkgs.stdenv.mkDerivation rec {
       name = "${bin}-${version}";
@@ -70,6 +76,7 @@ in
 pkgs.mkShell {
   buildInputs = [
     pkgs.gnumake
+    pkgs.nodejs-10_x  # lts
     pkgs.yarn
     purs
     spago
