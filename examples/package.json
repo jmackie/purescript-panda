@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "dependencies": {
+    "html-webpack-plugin": "^3.2.0",
+    "purescript-psa": "^0.7.3",
+    "purs-loader": "^3.6.0",
+    "webpack": "^4.38.0",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "scripts": {
+    "prepare": "spago install",
+    "start": "webpack-dev-server",
+    "build": "webpack"
+  }
+}

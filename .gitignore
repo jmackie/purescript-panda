@@ -1,14 +1,7 @@
 .psc-ide-port
-.psc-package
-.pulp-cache
-.purs-repl
-bower_components
-dist.js
-node_modules
+.spago
 output
-package-lock.json
-tags
+generated-docs
 
-
-/.spago
-/generated-docs
+examples/node_modules/
+examples/dist/

@@ -69,6 +69,8 @@ let
 in
 pkgs.mkShell {
   buildInputs = [
+    pkgs.gnumake
+    pkgs.yarn
     purs
     spago
     purty
