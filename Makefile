@@ -1,3 +1,5 @@
+# `nix-shell --pure --run make`
+
 .PHONY: all
 all: build test
 
