@@ -1,5 +1,7 @@
 # Panda 🐼
 
+[![Build Status](https://travis-ci.org/jmackie/purescript-panda.svg?branch=master)](https://travis-ci.org/jmackie/purescript-panda)
+
 Panda is a PureScript UI library for building declarative front-ends without a
 virtual DOM. To achieve this, dynamic events are specifically labelled and
 configured to produce specific event listeners, and updates are localised to
