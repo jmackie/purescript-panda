@@ -1,64 +1,11 @@
-module Panda.Builders.Property.Producers
-  ( onBlur
-  , onBlur_
-  , onChange
-  , onChange_
-  , onChange'
-  , onClick
-  , onClick_
-  , onDoubleClick
-  , onDoubleClick_
-  , onDrag
-  , onDrag_
-  , onDragEnd
-  , onDragEnd_
-  , onDragEnter
-  , onDragEnter_
-  , onDragLeave
-  , onDragLeave_
-  , onDragOver
-  , onDragOver_
-  , onDragStart
-  , onDragStart_
-  , onDrop
-  , onDrop_
-  , onError
-  , onError_
-  , onFocus
-  , onFocus_
-  , onInput
-  , onInput_
-  , onInput'
-  , onKeyDown
-  , onKeyDown_
-  , onKeyDown'
-  , onKeyUp
-  , onKeyUp_
-  , onKeyUp'
-  , onMouseDown
-  , onMouseDown_
-  , onMouseEnter
-  , onMouseEnter_
-  , onMouseLeave
-  , onMouseLeave_
-  , onMouseMove
-  , onMouseMove_
-  , onMouseOver
-  , onMouseOver_
-  , onMouseOut
-  , onMouseOut_
-  , onMouseUp
-  , onMouseUp_
-  , onSubmit
-  , onSubmit_
-  ) where
+module Panda.Builders.Property.Producers where
 
+import Prelude
 import Control.Monad.Except (runExcept)
-import Data.Maybe (Maybe(..))
 import Data.Either (either)
+import Data.Maybe (Maybe(..))
 import Foreign (readInt, readString, unsafeToForeign) as F
 import Foreign.Index (readProp) as F
-import Panda.Internal.Types as Types
 import Unsafe.Coerce (unsafeCoerce)
 import Web.Event.Internal.Types (Event) as Web
 import Web.HTML.Event.DragEvent (DragEvent) as Web
@@ -66,33 +13,8 @@ import Web.HTML.Event.ErrorEvent (ErrorEvent) as Web
 import Web.UIEvent.FocusEvent (FocusEvent) as Web
 import Web.UIEvent.KeyboardEvent (KeyboardEvent) as Web
 import Web.UIEvent.MouseEvent (MouseEvent) as Web
-import Prelude
-
--- | Given an event, get the value of the target element, if available, using
--- | the foreign interface.
-targetValue ::
-  forall message.
-  (String -> Maybe message) ->
-  Web.Event ->
-  Maybe message
-targetValue handler ev = either (\_ -> Nothing) handler (runExcept result)
-  where
-  result =
-    F.readProp "target" (F.unsafeToForeign ev)
-      >>= F.readProp "value"
-      >>= F.readString
-
--- | Get a keycode, if available, from some event.
-keyCode ::
-  forall message.
-  (Int -> Maybe message) ->
-  Web.Event ->
-  Maybe message
-keyCode handler ev = either (\_ -> Nothing) handler (runExcept result)
-  where
-  result =
-    F.readProp "keyCode" (F.unsafeToForeign ev)
-      >>= F.readInt
+--
+import Panda.Internal.Types as Types
 
 type Producer middle
   = forall input message state.
@@ -277,3 +199,29 @@ onSubmit = makeProducer Types.OnSubmit
 
 onSubmit_ :: Producer_ Web.Event
 onSubmit_ = makeProducer_ Types.OnSubmit
+
+-- | Given an event, get the value of the target element, if available, using
+-- | the foreign interface.
+targetValue ::
+  forall message.
+  (String -> Maybe message) ->
+  Web.Event ->
+  Maybe message
+targetValue handler ev = either (\_ -> Nothing) handler (runExcept result)
+  where
+  result =
+    F.readProp "target" (F.unsafeToForeign ev)
+      >>= F.readProp "value"
+      >>= F.readString
+
+-- | Get a keycode, if available, from some event.
+keyCode ::
+  forall message.
+  (Int -> Maybe message) ->
+  Web.Event ->
+  Maybe message
+keyCode handler ev = either (\_ -> Nothing) handler (runExcept result)
+  where
+  result =
+    F.readProp "keyCode" (F.unsafeToForeign ev)
+      >>= F.readInt

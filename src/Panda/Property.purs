@@ -1,14 +1,82 @@
+-- | This file exports the property API for Panda applications. 
+-- | 
+-- | TODO: Comment that this is the public API, the modules rexported here
+-- | should be considered internal.
+-- | 
+-- | Everything that is accessible under the `PP` namespace comes from this 
+-- | file as an import
+-- | by proxy.
 module Panda.Property
-  ( module Builders
+  ( module Watchers
+  , module Producers
+  , module Properties
   , module ExportedTypes
   ) where
 
--- | This file exports the property API for Panda applications. Everything that
--- | is accessible under the `PP` namespace comes from this file as an import
--- | by proxy.
+import Panda.Builders.Property.Producers
+  ( Producer
+  , Producer_
+  , onBlur
+  , onBlur_
+  , onChange
+  , onChange_
+  , onChange'
+  , onClick
+  , onClick_
+  , onDoubleClick
+  , onDoubleClick_
+  , onDrag
+  , onDrag_
+  , onDragEnd
+  , onDragEnd_
+  , onDragEnter
+  , onDragEnter_
+  , onDragLeave
+  , onDragLeave_
+  , onDragOver
+  , onDragOver_
+  , onDragStart
+  , onDragStart_
+  , onDrop
+  , onDrop_
+  , onError
+  , onError_
+  , onFocus
+  , onFocus_
+  , onInput
+  , onInput_
+  , onInput'
+  , onKeyDown
+  , onKeyDown_
+  , onKeyDown'
+  , onKeyUp
+  , onKeyUp_
+  , onKeyUp'
+  , onMouseDown
+  , onMouseDown_
+  , onMouseEnter
+  , onMouseEnter_
+  , onMouseLeave
+  , onMouseLeave_
+  , onMouseMove
+  , onMouseMove_
+  , onMouseOver
+  , onMouseOver_
+  , onMouseOut
+  , onMouseOut_
+  , onMouseUp
+  , onMouseUp_
+  , onSubmit
+  , onSubmit_
+  )
+  as Producers
+import Panda.Builders.Property.Watchers
+  ( watch
+  , when
+  )
+  as Watchers
 import Panda.Builders.Properties
-  ( FormEncodingType(..)
-  , Target(..)
+  ( StaticProperty
   , accept
   , accesskey
   , action
@@ -44,6 +112,7 @@ import Panda.Builders.Properties
   , disabled
   , download
   , enctype
+  , FormEncodingType(..)
   , for
   , form
   , formaction
@@ -66,66 +135,14 @@ import Panda.Builders.Properties
   , manifest
   , max
   , maxlength
+  , minlength
   , media
   , method
   , min
-  , minlength
   , multiple
   , muted
   , name
   , novalidate
-  , onBlur
-  , onBlur_
-  , onChange
-  , onChange'
-  , onChange_
-  , onClick
-  , onClick_
-  , onDoubleClick
-  , onDoubleClick_
-  , onDrag
-  , onDragEnd
-  , onDragEnd_
-  , onDragEnter
-  , onDragEnter_
-  , onDragLeave
-  , onDragLeave_
-  , onDragOver
-  , onDragOver_
-  , onDragStart
-  , onDragStart_
-  , onDrag_
-  , onDrop
-  , onDrop_
-  , onError
-  , onError_
-  , onFocus
-  , onFocus_
-  , onInput
-  , onInput'
-  , onInput_
-  , onKeyDown
-  , onKeyDown'
-  , onKeyDown_
-  , onKeyUp
-  , onKeyUp'
-  , onKeyUp_
-  , onMouseDown
-  , onMouseDown_
-  , onMouseEnter
-  , onMouseEnter_
-  , onMouseLeave
-  , onMouseLeave_
-  , onMouseMove
-  , onMouseMove_
-  , onMouseOut
-  , onMouseOut_
-  , onMouseOver
-  , onMouseOver_
-  , onMouseUp
-  , onMouseUp_
-  , onSubmit
-  , onSubmit_
   , open
   , optimum
   , pattern
@@ -157,17 +174,15 @@ import Panda.Builders.Properties
   , step
   , summary
   , target
+  , Target(..)
   , type_
   , usemap
   , value
-  , watch
-  , when
   , width
   )
-  as Builders
+  as Properties
 import Panda.Internal.Types
-  ( Producer(..)
-  , Property(..)
+  ( Property(..)
   , ShouldUpdate(..)
   )
   as ExportedTypes

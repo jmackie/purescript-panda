@@ -1,114 +1,7 @@
-module Panda.Builders.Properties
-  ( module Watchers
-  , module Producers
-  , FormEncodingType(..)
-  , Target(..)
-  , accept
-  , accesskey
-  , action
-  , align
-  , alt
-  , async
-  , autocomplete
-  , autofocus
-  , autoplay
-  , bgcolor
-  , border
-  , buffered
-  , challenge
-  , charset
-  , checked
-  , cite
-  , className
-  , code
-  , codebase
-  , color
-  , cols
-  , colspan
-  , content
-  , contextmenu
-  , controls
-  , coords
-  , crossorigin
-  , data_
-  , datetime
-  , default
-  , defer
-  , dirname
-  , disabled
-  , download
-  , enctype
-  , for
-  , form
-  , formaction
-  , headers
-  , height
-  , high
-  , href
-  , hreflang
-  , http
-  , icon
-  , integrity
-  , ismap
-  , keytype
-  , kind
-  , label
-  , language
-  , list
-  , loop
-  , low
-  , manifest
-  , max
-  , maxlength
-  , minlength
-  , media
-  , method
-  , min
-  , multiple
-  , muted
-  , name
-  , novalidate
-  , open
-  , optimum
-  , pattern
-  , ping
-  , placeholder
-  , poster
-  , preload
-  , radiogroup
-  , readonly
-  , rel
-  , required
-  , reversed
-  , rows
-  , rowspan
-  , sandbox
-  , scope
-  , scoped
-  , seamless
-  , selected
-  , shape
-  , size
-  , sizes
-  , span
-  , src
-  , srcdoc
-  , srclang
-  , srcset
-  , start
-  , step
-  , summary
-  , target
-  , type_
-  , usemap
-  , value
-  , width
-  ) where
+module Panda.Builders.Properties where
 
 import Data.HTTP.Method as HTTP
 import Panda.Internal.Types as Types
-import Panda.Builders.Property.Producers (onBlur, onBlur_, onChange, onChange', onChange_, onClick, onClick_, onDoubleClick, onDoubleClick_, onDrag, onDragEnd, onDragEnd_, onDragEnter, onDragEnter_, onDragLeave, onDragLeave_, onDragOver, onDragOver_, onDragStart, onDragStart_, onDrag_, onDrop, onDrop_, onError, onError_, onFocus, onFocus_, onInput, onInput', onInput_, onKeyDown, onKeyDown', onKeyDown_, onKeyUp, onKeyUp', onKeyUp_, onMouseDown, onMouseDown_, onMouseEnter, onMouseEnter_, onMouseLeave, onMouseLeave_, onMouseMove, onMouseMove_, onMouseOut, onMouseOut_, onMouseOver, onMouseOver_, onMouseUp, onMouseUp_, onSubmit, onSubmit_) as Producers
-import Panda.Builders.Property.Watchers (watch, when) as Watchers
 import Data.String.CodeUnits (singleton)
 import Prelude ((<<<))
 
@@ -229,11 +122,6 @@ disabled =
 download :: String -> StaticProperty
 download = make "download"
 
-data FormEncodingType
-  = XWWWFormUrlEncoded
-  | MultipartFormData
-  | TextPlain
-
 enctype :: FormEncodingType -> StaticProperty
 enctype =
   make "enctype"
@@ -241,6 +129,11 @@ enctype =
         XWWWFormUrlEncoded -> "x-www-form-urlencoded"
         MultipartFormData -> "multipart/form-data"
         TextPlain -> "text/plain"
+
+data FormEncodingType
+  = XWWWFormUrlEncoded
+  | MultipartFormData
+  | TextPlain
 
 for :: String -> StaticProperty
 for = make "for"
@@ -430,12 +323,6 @@ step = make "step"
 summary :: String -> StaticProperty
 summary = make "summary"
 
-data Target
-  = Self
-  | Blank
-  | Parent
-  | Top
-
 target :: Target -> StaticProperty
 target =
   make "target"
@@ -444,6 +331,12 @@ target =
         Blank -> "_blank"
         Parent -> "_parent"
         Top -> "_top"
+
+data Target
+  = Self
+  | Blank
+  | Parent
+  | Top
 
 type_ :: String -> StaticProperty
 type_ = make "type"
