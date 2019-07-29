@@ -434,7 +434,7 @@ module Panda.Builders.HTML
   ) where
 
 import Panda.Internal.Types as Types
-import Panda.Builders.HTML.Collection as Collection
+import Panda.Builders.HTML.Collection (sort, sortBy, sortWith) as Collection
 
 -- | A fully-polymorphic component (and therefore either an element or text).
 type Element

@@ -107,8 +107,8 @@ module Panda.Builders.Properties
 
 import Data.HTTP.Method as HTTP
 import Panda.Internal.Types as Types
-import Panda.Builders.Property.Producers as Producers
-import Panda.Builders.Property.Watchers as Watchers
+import Panda.Builders.Property.Producers (onBlur, onBlur_, onChange, onChange', onChange_, onClick, onClick_, onDoubleClick, onDoubleClick_, onDrag, onDragEnd, onDragEnd_, onDragEnter, onDragEnter_, onDragLeave, onDragLeave_, onDragOver, onDragOver_, onDragStart, onDragStart_, onDrag_, onDrop, onDrop_, onError, onError_, onFocus, onFocus_, onInput, onInput', onInput_, onKeyDown, onKeyDown', onKeyDown_, onKeyUp', onKeyUp_, onMouseDown, onMouseDown_, onMouseEnter, onMouseEnter_, onMouseLeave, onMouseLeave_, onMouseMove, onMouseMove_, onMouseOut, onMouseOut_, onMouseOver, onMouseOver_, onMouseUp, onMouseUp_, onSubmit, onSubmit_) as Producers
+import Panda.Builders.Property.Watchers (watch, when) as Watchers
 import Data.String.CodeUnits (singleton)
 import Prelude ((<<<))
 
