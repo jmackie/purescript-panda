@@ -16,3 +16,8 @@ the generated html files. Editing the code will reload the example(s).
 
 Start here. A simple button component that displays the number of times
 it's been clicked.
+
+#### `sign-up`
+
+A sign-up form that illustrates most of the basic concepts with some
+parent-child communication.

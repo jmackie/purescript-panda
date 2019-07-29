@@ -5,8 +5,8 @@ module.exports = {
   mode: "development",
   context: __dirname,
   entry: {
-    counter: path.resolve(__dirname, "counter/index.js")
-    //todo: path.resolve(__dirname, "todo/index.js")
+    counter: path.resolve(__dirname, "counter/index.js"),
+    "sign-up": path.resolve(__dirname, "sign-up/index.js")
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -25,11 +25,16 @@ module.exports = {
               src: [
                 "./.spago/*/*/src/**/*.purs",
                 "../src/**/*.purs",
-                "./counter/**/*.purs"
+                "./counter/**/*.purs",
+                "./sign-up/**/*.purs"
               ]
             }
           }
         ]
+      },
+      {
+        test: /\.css$/,
+        use: [{ loader: "style-loader" }, { loader: "css-loader" }]
       }
     ]
   },
@@ -38,12 +43,12 @@ module.exports = {
       title: "counter",
       chunks: ["counter"],
       filename: "counter.html"
+    }),
+    new HtmlWebpackPlugin({
+      title: "sign-up",
+      chunks: ["sign-up"],
+      filename: "sign-up.html"
     })
-    //new HtmlWebpackPlugin({
-    //  title: "Example: todo",
-    //  chunks: ["todo"],
-    //  filename: "todo.html"
-    //})
   ],
   devServer: {
     publicPath: "/",

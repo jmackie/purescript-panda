@@ -1,4 +1,4 @@
-module Main (main) where
+module Example.Counter.Main (main) where
 
 import Prelude
 import Control.Plus (empty)
