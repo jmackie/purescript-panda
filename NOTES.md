@@ -1,6 +1,5 @@
 Documenting my thinkings as I try and understand this code.
 
-- panda is not a very googleable name.
 - Why `runApplicationInBody` not `runComponentInBody`? The type suggests it
   should be called the latter, but if there's a good reason for it to be how
   it is then it's not clear.
@@ -12,7 +11,6 @@ Documenting my thinkings as I try and understand this code.
 - Need sections on the roles of `input`, `output`, `message` and `state` types.
 - Need to document the appropriate names for `Updater` arguments. And what they
   mean/how they work.
-- I'd prefer `Panda.Html` to `Panda.HTML`.
 - What do the combinations of `'` and `_` mean.
 - Wtf is a `Collection`
 - Need to export html and property type synonyms so they're visible in the
