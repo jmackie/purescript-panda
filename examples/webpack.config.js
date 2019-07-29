@@ -5,7 +5,7 @@ module.exports = {
   mode: "development",
   context: __dirname,
   entry: {
-    button: path.resolve(__dirname, "button/index.js")
+    counter: path.resolve(__dirname, "counter/index.js")
     //todo: path.resolve(__dirname, "todo/index.js")
   },
   output: {
@@ -25,7 +25,7 @@ module.exports = {
               src: [
                 "./.spago/*/*/src/**/*.purs",
                 "../src/**/*.purs",
-                "./button/**/*.purs"
+                "./counter/**/*.purs"
               ]
             }
           }
@@ -35,9 +35,9 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "Example: button",
-      chunks: ["button"],
-      filename: "button.html"
+      title: "counter",
+      chunks: ["counter"],
+      filename: "counter.html"
     })
     //new HtmlWebpackPlugin({
     //  title: "Example: todo",

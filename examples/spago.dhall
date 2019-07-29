@@ -5,5 +5,5 @@
 , packages =
     ./../packages.dhall
 , sources =
-    [ "../src/**/*.purs", "./button/**/*.purs" ]
+    [ "../src/**/*.purs", "./counter/**/*.purs" ]
 }

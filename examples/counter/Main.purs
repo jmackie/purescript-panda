@@ -1,4 +1,4 @@
-module Main where
+module Main (main) where
 
 import Prelude
 import Control.Plus (empty)
@@ -6,7 +6,7 @@ import Data.Algebra.Array as A
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import FRP.Event as FRP
--- 
+--
 import Panda as P
 import Panda.HTML as PH
 import Panda.Property as PP
@@ -16,20 +16,17 @@ main = do
   _ <- P.runApplicationInBody application
   pure unit
 
-type Input
-  = Unit
-
-type Output
-  = Void
+data Input
+  = UpdateCount Int
 
 data Message
-  = Increment
-  | Reset
+  = UserClickedCount
+  | UserClickedReset
 
 type State
   = Int
 
-application :: P.Component Input Output Message State
+application :: forall output. P.Component Input output Message State
 application =
   { initial
   , update
@@ -39,21 +36,21 @@ application =
 
 initial :: { input :: Input, state :: State }
 initial =
-  { input: unit
+  { input: UpdateCount 0
   , state: 0
   }
 
-update :: P.Updater Input Output Message State
-update _emit dispatch { message, state: s } = do
+update :: forall output. P.Updater Input output Message State
+update _emit dispatch { message } = do
   case message of
-    Increment ->
+    UserClickedCount ->
       dispatch \currentState ->
-        { input: Just unit -- view doesn't update if this is `Nothing`
+        { input: Just $ UpdateCount (currentState + 1)
         , state: currentState + 1
         }
-    Reset ->
+    UserClickedReset ->
       dispatch \_ ->
-        { input: Just unit -- view doesn't update if this is `Nothing`
+        { input: Just (UpdateCount 0)
         , state: 0
         }
 
@@ -61,13 +58,14 @@ view :: PH.HTML Input Message State
 view =
   PH.div_
     [ PH.button'
-        [ PP.onClick \_mouseEvent -> Just Increment
-        ] \{ state } ->
-        [ A.Empty
-        , A.Push $ PH.text (show state)
-        ]
+        [ PP.onClick \_mouseEvent -> Just UserClickedCount
+        ] \{ input } -> case input of
+        UpdateCount count ->
+          [ A.Empty
+          , A.Push $ PH.text (show count)
+          ]
     , PH.button
-        [ PP.onClick \_mouseEvent -> Just Reset
+        [ PP.onClick \_mouseEvent -> Just UserClickedReset
         ]
         [ PH.text "Reset"
         ]
