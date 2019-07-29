@@ -1,6 +1,8 @@
 module Panda
-  ( module ExportedTypes
+  ( Controller
   , runApplicationInBody
+  , runApplicationInNode
+  , module ExportedTypes
   ) where
 
 import Data.Maybe (Maybe(..))
