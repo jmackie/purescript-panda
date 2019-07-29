@@ -14,3 +14,25 @@ import Panda as P
 import Panda.HTML as PH
 import Panda.Property as PP
 ```
+
+## Concepts
+
+A component in `panda` has the type:
+
+```
+P.Component Input Output Message State
+```
+
+### `Input`
+
+An `Input` is a command that will in some way influence the DOM presentation.
+
+### `Output`
+
+An `Output` is a message that can be emitted by a component. The parent of a
+component will generally map child `Outputs` to it's own `Message` type.
+
+### `Message`
+
+A `Message` is an _internal_ event that is handled by the component's `update`
+function.
