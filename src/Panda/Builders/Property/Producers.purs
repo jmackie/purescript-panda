@@ -32,6 +32,7 @@ module Panda.Builders.Property.Producers
   , onKeyDown
   , onKeyDown_
   , onKeyDown'
+  , onKeyUp
   , onKeyUp_
   , onKeyUp'
   , onMouseDown

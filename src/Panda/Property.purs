@@ -107,6 +107,7 @@ import Panda.Builders.Properties
   , onKeyDown
   , onKeyDown'
   , onKeyDown_
+  , onKeyUp
   , onKeyUp'
   , onKeyUp_
   , onMouseDown
