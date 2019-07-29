@@ -21,7 +21,7 @@ module.exports = {
           {
             loader: "purs-loader",
             options: {
-              psa: true,
+              psc: "psa",
               src: [
                 "./.spago/*/*/src/**/*.purs",
                 "../src/**/*.purs",
@@ -48,6 +48,10 @@ module.exports = {
   devServer: {
     publicPath: "/",
     contentBase: path.resolve(__dirname, "dist"),
+    port: 8080,
+    stats: "errors-only",
+    progress: true,
+    inline: true,
     hot: true
   }
 };
