@@ -38,3 +38,54 @@ component will generally map child `Outputs` to it's own `Message` type.
 
 A `Message` is an _internal_ event that is handled by the component's `update`
 function.
+
+## Module Skeleton
+
+```
+import Prelude
+import Control.Plus (empty)
+import Effect (Effect)
+import FRP.Event as FRP
+--
+import Panda as P
+import Panda.HTML as PH
+
+main :: Effect Unit
+main = do
+  _ <- P.runApplicationInBody application
+  pure unit
+
+type Input
+  = Unit
+
+data Message
+  = NoOp
+
+type State
+  = Unit
+
+application :: forall output. P.Component Input output Message State
+application =
+  { initial
+  , update
+  , view
+  , subscription
+  }
+
+initial :: { input :: Input, state :: State }
+initial =
+  { input: unit
+  , state: unit
+  }
+
+update :: forall output. P.Updater Input output Message State
+update _emit _dispatch { message, state } = do
+  case message of
+    NoOp -> pure unit
+
+view :: PH.HTML Input Message State
+view = PH.text "TODO"
+
+subscription :: FRP.Event Message
+subscription = empty
+```
