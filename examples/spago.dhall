@@ -5,5 +5,9 @@
 , packages =
     ./../packages.dhall
 , sources =
-    [ "../src/**/*.purs", "./counter/**/*.purs", "./sign-up/**/*.purs" ]
+    [ "../src/**/*.purs"
+    , "./counter/**/*.purs"
+    , "./sign-up/**/*.purs"
+    , "./todomvc/**/*.purs"
+    ]
 }

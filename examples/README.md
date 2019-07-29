@@ -21,3 +21,8 @@ it's been clicked.
 
 A sign-up form that illustrates most of the basic concepts with some
 parent-child communication.
+
+#### `todomvc`
+
+http://todomvc.com/
+https://github.com/tastejs/todomvc-app-template

@@ -6,7 +6,8 @@ module.exports = {
   context: __dirname,
   entry: {
     counter: path.resolve(__dirname, "counter/index.js"),
-    "sign-up": path.resolve(__dirname, "sign-up/index.js")
+    "sign-up": path.resolve(__dirname, "sign-up/index.js"),
+    todomvc: path.resolve(__dirname, "todomvc/index.js")
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -26,7 +27,8 @@ module.exports = {
                 "./.spago/*/*/src/**/*.purs",
                 "../src/**/*.purs",
                 "./counter/**/*.purs",
-                "./sign-up/**/*.purs"
+                "./sign-up/**/*.purs",
+                "./todomvc/**/*.purs"
               ]
             }
           }
@@ -34,7 +36,10 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [{ loader: "style-loader" }, { loader: "css-loader" }]
+        use: [
+          { loader: "style-loader", options: {} },
+          { loader: "css-loader", options: {} }
+        ]
       }
     ]
   },
@@ -48,6 +53,11 @@ module.exports = {
       title: "sign-up",
       chunks: ["sign-up"],
       filename: "sign-up.html"
+    }),
+    new HtmlWebpackPlugin({
+      title: "todomvc",
+      chunks: ["todomvc"],
+      filename: "todomvc.html"
     })
   ],
   devServer: {
